@@ -20,7 +20,7 @@ Member functions: __str__ (used to output the current data in the URL for loggin
         __init__ (used for initializing an empty URL object)
 """
 class URL():
-    def __init__(self, url):
+    def __init__(self, url = None):
         self.url = url
         self.status = None
         self.parent = None
