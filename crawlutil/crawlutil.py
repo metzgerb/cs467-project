@@ -10,7 +10,7 @@ Last Modified: 2019-10-19
 """
 
 #import dependencies
-import requests
+import urllib.request
 from html.parser import HTMLParser
 
 """
@@ -76,10 +76,10 @@ def get_links(url, parent = None):
     link.parent = parent
     
     #make get request
-    response = requests.get(link.url)
+    response = urllib.request.urlopen(link.url)
     
     #set status
-    link.status = response.status_code
+    link.status = response.getcode()
     
     #TODO: check for no index meta tag in header
     
@@ -87,7 +87,7 @@ def get_links(url, parent = None):
     if response:
         #parse HTML content
         parser = LinkParser()
-        parser.feed(response.text)
+        parser.feed(str(response.read()))
         
         #assign to URL object
         link.links = parser.links.copy()
