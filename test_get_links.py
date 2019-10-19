@@ -11,6 +11,6 @@ Last Modified: 2019-10-19
 
 
 #import dependencies
-import crawlutilpy as cu
+import crawlutil as cu
 
 cu.get_links("https://www.google.com")

@@ -58,8 +58,8 @@ def get_links(url, parent = None):
     #check for errors from response
     if response:
         #parse HTML content
-        html = html.fromstring(response.content)
-        print(html)
+        body = html.fromstring(response.content)
+        print(body)
         #filter HTML to hrefs only
         
         #iterate through hrefs and create dictionary of URLs

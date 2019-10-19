@@ -6,7 +6,7 @@ Description: URL crawling program that can search DFS or BFS through links.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-10-18
+Last Modified: 2019-10-19
 """
 
 #import dependencies
@@ -24,6 +24,6 @@ def main(url, search_type, link_limit, keyword = None):
 
     return
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     print("main")
     
