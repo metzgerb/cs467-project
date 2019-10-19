@@ -11,7 +11,7 @@ Last Modified: 2019-10-19
 
 #import dependencies
 import requests
-from lxml import html
+from html.parser import HTMLParser
 
 """
 Class Name: URL
@@ -33,6 +33,34 @@ class URL():
         print(self.parent)
         for link in links:
             print(link)
+
+"""
+Class Name: LinkParser
+Description: Inherited from HTMLParser, customizes tag parsing functions
+Member functions: handle_starttag (collects all start tags)
+    handle_startendtag (collects all self closing tags)
+"""
+class LinkParser(HTMLParser):
+    links = list()
+    
+    def handle_starttag(self, tag, attrs):
+        #capture only links
+        if tag == 'a':
+            #loop through attributes
+            for attr in attrs:
+                #loop through attributes
+                if attr[0] == 'href':
+                    self.links.append(attr[1])
+
+    def handle_startendtag(self, tag, attrs):
+        #capture only links
+        if tag == 'a':
+            #loop through attributes
+            for attr in attrs:
+                #collect only hrefs
+                if attr[0] == 'href':
+                    self.links.append(attr[1])
+
 
 """
 Function Name: get_links
@@ -58,9 +86,12 @@ def get_links(url, parent = None):
     #check for errors from response
     if response:
         #parse HTML content
-        body = html.fromstring(response.content)
-        print(body)
+        parser = LinkParser()
+        parser.feed(response.text)
+        
         #filter HTML to hrefs only
+        for link in parser.links:
+            print(link)
         
         #iterate through hrefs and create dictionary of URLs
             #convert relative URLs
