@@ -24,7 +24,7 @@ class URL():
         self.url = url
         self.status = None
         self.parent = None
-        self.links = {}
+        self.links = []
     
     def __str__(self):
         #TODO: define output for logging (work with Christopher)
@@ -89,9 +89,12 @@ def get_links(url, parent = None):
         parser = LinkParser()
         parser.feed(response.text)
         
-        #filter HTML to hrefs only
-        for link in parser.links:
-            print(link)
+        #assign to URL object
+        link.links = parser.links.copy()
+        
+        #testing DELETE
+        for item in link.links:
+            print(item)
         
         #iterate through hrefs and create dictionary of URLs
             #convert relative URLs
