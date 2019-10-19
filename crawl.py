@@ -10,7 +10,7 @@ Last Modified: 2019-10-18
 """
 
 #import dependencies
-import crawl-util as cu
+import crawlutil as cu
 
 """
 Function Name: main
@@ -23,3 +23,7 @@ Outputs: ???
 def main(url, search_type, link_limit, keyword = None):
 
     return
+
+if __name__ = "__main__":
+    print("main")
+    
