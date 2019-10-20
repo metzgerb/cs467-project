@@ -11,6 +11,7 @@ Last Modified: 2019-10-19
 
 #import dependencies
 import urllib.request
+import urllib.parse
 from html.parser import HTMLParser
 
 """
@@ -28,11 +29,23 @@ class URL():
     
     def __str__(self):
         #TODO: define output for logging (work with Christopher)
-        print(self.url)
-        print(self.status)
-        print(self.parent)
-        for link in links:
-            print(link)
+        response = "URL: " 
+        if self.url:
+            response += self.url
+            
+        response += "\nSTATUS: "
+        if self.status:
+            response += str(self.status)
+        
+        response += "\nParent: " 
+        if self.parent:
+            response += self.parent
+        
+        response += "\nLINKS:"
+        for link in self.links:
+            response += "\n" + link
+        
+        return response
 
 """
 Class Name: LinkParser
@@ -60,6 +73,10 @@ class LinkParser(HTMLParser):
                 #collect only hrefs
                 if attr[0] == 'href':
                     self.links.append(attr[1])
+    
+    #used to reset the instance
+    def reset_links(self):
+        self.links = []
 
 
 """
@@ -74,7 +91,7 @@ def get_links(url, parent = None):
     #create URL object and set parent
     link = URL(url)
     link.parent = parent
-    
+
     #make get request
     response = urllib.request.urlopen(link.url)
     
@@ -87,16 +104,33 @@ def get_links(url, parent = None):
     if response:
         #parse HTML content
         parser = LinkParser()
+        parser.reset_links()
         parser.feed(str(response.read()))
-        
+
         #assign to URL object
         link.links = parser.links.copy()
+        parser.close()
         
+        #parse original url
+        parsed = urllib.parse.urlparse(link.url, scheme="http")
+        
+        #iterate through hrefs and convert relative URLs
+        for i in range(len(link.links)):
+            #check for "/" beginning
+            if link.links[i][0] == "/":
+                #add scheme and networkloc to url
+                link.links[i] = parsed.scheme + "://" + parsed.netloc + link.links[i]
+            
+            #check for "./" beginning
+            elif link.links[i][:2] == "./":
+                #add scheme, networkloc, and all but last part of path to url
+                link.links[i] = parsed.scheme + "://" + parsed.netloc + parsed.path[:parsed.path.rfind('/')] + link.links[i][1:]
+            
+            #check for "../" beginning
+            elif link.links[i][:3] == "../":
+                print("'../' detected: %s" % link.links[i])
+                
         #testing DELETE
-        for item in link.links:
-            print(item)
-        
-        #iterate through hrefs and create dictionary of URLs
-            #convert relative URLs
+        #print(link)
     
     return link

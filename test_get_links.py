@@ -40,3 +40,33 @@ test_list.sort()
 test_url.links.sort()
 
 assert(test_url.links == test_list)
+del test_url
+
+"""
+Name: get_links Relative Path Links
+Target: crawlutil.get_links()
+Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html"
+Expected Output: URL object with 5 links, no parent, and a status of 200
+"""
+test_url = cu.URL()
+test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html")
+
+#check for failures
+assert(test_url.status == 200)
+assert(test_url.parent is None)
+assert(len(test_url.links) == 5)
+
+test_list = [
+    "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
+	"https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html",
+	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html",
+	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html",
+	"https://web.engr.oregonstate.edu/~metzgerb/crawler/badlink.html",
+]
+
+#sort lists
+test_list.sort()
+test_url.links.sort()
+
+assert(test_url.links == test_list)
+del test_url
