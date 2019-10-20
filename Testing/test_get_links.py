@@ -187,4 +187,39 @@ print("PASSED\n\n")
 del test_url
 
 
+"""
+Name: get_links No links
+Target: crawlutil.get_links()
+Input: "nolinks.html"
+Expected Output: URL object with 0 links, no parent, and a status of 200
+"""
+print("Testing URL with no links: " + ROOT_URL + "nolinks.html")
+test_url = cu.URL()
+test_url = cu.get_links(ROOT_URL + "nolinks.html")
+
+#check for failures
+print("Checking status (200): ", end = "")
+assert(test_url.status == 200)
+print(str(test_url.status))
+
+print("Checking parent (None): ", end = "")
+assert(test_url.parent is None)
+print("None")
+
+print("Checking # of links (0): ", end = "")
+assert(len(test_url.links) == 0)
+print(len(test_url.links))
+
+test_list = []
+
+#sort lists
+test_list.sort()
+test_url.links.sort()
+
+print("Checking links match: ", end = "")
+assert(test_url.links == test_list)
+print("PASSED\n\n")
+
+del test_url
+
 print("ALL TESTS PASSED")
