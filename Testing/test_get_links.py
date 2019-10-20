@@ -18,15 +18,17 @@ sys.path.append(os.path.join(os.getcwd(),'crawlutil'))
 
 import crawlutil as cu
 
+ROOT_URL = "https://web.engr.oregonstate.edu/~metzgerb/crawler/"
+
 """
 Name: get_links Absolute Path Links
 Target: crawlutil.get_links()
-Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html"
+Input: "index.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
-print("Testing Absolute Path links: https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html")
+print("Testing Absolute Path links: " + ROOT_URL + "index.html")
 test_url = cu.URL()
-test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html")
+test_url = cu.get_links(ROOT_URL + "index.html")
 
 #check for failures
 print("Checking status (200): ", end = "")
@@ -42,11 +44,11 @@ assert(len(test_url.links) == 5)
 print(len(test_url.links))
 
 test_list = [
-    "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/nolinks.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/badlink.html",
+    ROOT_URL + "relative.html",
+	ROOT_URL + "nolinks.html",
+	ROOT_URL + "sub/sub1.html",
+	ROOT_URL + "sub/sub/subsub1.html",
+	ROOT_URL + "badlink.html",
 ]
 
 #sort lists
@@ -62,12 +64,12 @@ del test_url
 """
 Name: get_links Relative Path Links in Same directory
 Target: crawlutil.get_links()
-Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html"
+Input: "relative.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
-print("Testing Relative Path Links in Same Directory: https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html")
+print("Testing Relative Path Links in Same Directory: " + ROOT_URL + "relative.html")
 test_url = cu.URL()
-test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html")
+test_url = cu.get_links(ROOT_URL + "relative.html")
 
 #check for failures
 print("Checking status (200): ", end = "")
@@ -83,11 +85,11 @@ assert(len(test_url.links) == 5)
 print(len(test_url.links))
 
 test_list = [
-    "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/badlink.html",
+    ROOT_URL + "relative.html",
+	ROOT_URL + "index.html",
+	ROOT_URL + "sub/sub1.html",
+	ROOT_URL + "sub/sub/subsub1.html",
+	ROOT_URL + "badlink.html",
 ]
 
 #sort lists
@@ -104,12 +106,12 @@ del test_url
 """
 Name: get_links Relative Path Links in parent directory
 Target: crawlutil.get_links()
-Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html"
+Input: "sub/sub1.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
-print("Testing Relative Path Links in Parent Directory: https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html")
+print("Testing Relative Path Links in Parent Directory: " + ROOT_URL + "sub/sub1.html")
 test_url = cu.URL()
-test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html")
+test_url = cu.get_links(ROOT_URL + "sub/sub1.html")
 
 #check for failures
 print("Checking status (200): ", end = "")
@@ -125,11 +127,11 @@ assert(len(test_url.links) == 5)
 print(len(test_url.links))
 
 test_list = [
-    "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/nolinks.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/badlink.html",
+    ROOT_URL + "relative.html",
+	ROOT_URL + "index.html",
+	ROOT_URL + "nolinks.html",
+	ROOT_URL + "sub/sub/subsub1.html",
+	ROOT_URL + "badlink.html",
 ]
 
 #sort lists
@@ -146,12 +148,12 @@ del test_url
 """
 Name: get_links Relative Path Links in grandparent directory
 Target: crawlutil.get_links()
-Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html"
+Input: "sub/sub/subsub1.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
-print("Testing Relative Path Links in Grandparent Directory: https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html")
+print("Testing Relative Path Links in Grandparent Directory: " + ROOT_URL + "sub/sub/subsub1.html")
 test_url = cu.URL()
-test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html")
+test_url = cu.get_links(ROOT_URL + "sub/sub/subsub1.html")
 
 #check for failures
 print("Checking status (200): ", end = "")
@@ -167,11 +169,11 @@ assert(len(test_url.links) == 5)
 print(len(test_url.links))
 
 test_list = [
-    "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/nolinks.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html",
-	"https://web.engr.oregonstate.edu/~metzgerb/crawler/badlink.html",
+    ROOT_URL + "relative.html",
+	ROOT_URL + "index.html",
+	ROOT_URL + "nolinks.html",
+	ROOT_URL + "sub/sub1.html",
+	ROOT_URL + "badlink.html",
 ]
 
 #sort lists
