@@ -6,7 +6,7 @@ Description: Utility functions for URL crawling program.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-10-19
+Last Modified: 2019-10-20
 """
 
 #import dependencies
@@ -25,6 +25,7 @@ class URL():
         self.url = url
         self.status = None
         self.parent = None
+        self.key = False
         self.links = []
     
     def __str__(self):
@@ -40,6 +41,12 @@ class URL():
         response += "\nParent: " 
         if self.parent:
             response += self.parent
+        
+        response += "\nKeyword Found: " 
+        if self.key:
+            response += "True"
+        else:
+            response += "False"
         
         response += "\nLINKS:"
         for link in self.links:
@@ -98,6 +105,12 @@ def get_links(url, parent = None):
     #set status
     link.status = response.getcode()
     
+    
+    #read response data
+    page = str(response.read())
+    
+    #TODO: search for keyword and set keyword flag
+    
     #TODO: check for no index meta tag in header
     
     #check for errors from response
@@ -105,7 +118,7 @@ def get_links(url, parent = None):
         #parse HTML content
         parser = LinkParser()
         parser.reset_links()
-        parser.feed(str(response.read()))
+        parser.feed(page)
 
         #assign to URL object
         link.links = parser.links.copy()

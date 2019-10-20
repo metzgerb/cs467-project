@@ -6,7 +6,7 @@ Description: Runs tests for the get_links function in crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-19
-Last Modified: 2019-10-19
+Last Modified: 2019-10-20
 """
 
 
@@ -19,13 +19,22 @@ Target: crawlutil.get_links()
 Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
+print("Testing Absolute Path links: https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html")
 test_url = cu.URL()
 test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html")
 
 #check for failures
+print("Checking status (200): ", end = "")
 assert(test_url.status == 200)
+print(str(test_url.status))
+
+print("Checking parent (None): ", end = "")
 assert(test_url.parent is None)
+print("None")
+
+print("Checking # of links (5): ", end = "")
 assert(len(test_url.links) == 5)
+print(len(test_url.links))
 
 test_list = [
     "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
@@ -39,7 +48,10 @@ test_list = [
 test_list.sort()
 test_url.links.sort()
 
+print("Checking links match: ", end = "")
 assert(test_url.links == test_list)
+print("PASSED\n\n")
+
 del test_url
 
 """
@@ -48,13 +60,22 @@ Target: crawlutil.get_links()
 Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
+print("Testing Relative Path Links in Same Directory: https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html")
 test_url = cu.URL()
 test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html")
 
 #check for failures
+print("Checking status (200): ", end = "")
 assert(test_url.status == 200)
+print(str(test_url.status))
+
+print("Checking parent (None): ", end = "")
 assert(test_url.parent is None)
+print("None")
+
+print("Checking # of links (5): ", end = "")
 assert(len(test_url.links) == 5)
+print(len(test_url.links))
 
 test_list = [
     "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
@@ -68,7 +89,10 @@ test_list = [
 test_list.sort()
 test_url.links.sort()
 
+print("Checking links match: ", end = "")
 assert(test_url.links == test_list)
+print("PASSED\n\n")
+
 del test_url
 
 
@@ -78,13 +102,22 @@ Target: crawlutil.get_links()
 Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
+print("Testing Relative Path Links in Parent Directory: https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html")
 test_url = cu.URL()
 test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub1.html")
 
 #check for failures
+print("Checking status (200): ", end = "")
 assert(test_url.status == 200)
+print(str(test_url.status))
+
+print("Checking parent (None): ", end = "")
 assert(test_url.parent is None)
+print("None")
+
+print("Checking # of links (5): ", end = "")
 assert(len(test_url.links) == 5)
+print(len(test_url.links))
 
 test_list = [
     "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
@@ -98,7 +131,10 @@ test_list = [
 test_list.sort()
 test_url.links.sort()
 
+print("Checking links match: ", end = "")
 assert(test_url.links == test_list)
+print("PASSED\n\n")
+
 del test_url
 
 
@@ -108,13 +144,22 @@ Target: crawlutil.get_links()
 Input: "https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html"
 Expected Output: URL object with 5 links, no parent, and a status of 200
 """
+print("Testing Relative Path Links in Grandparent Directory: https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html")
 test_url = cu.URL()
 test_url = cu.get_links("https://web.engr.oregonstate.edu/~metzgerb/crawler/sub/sub/subsub1.html")
 
 #check for failures
+print("Checking status (200): ", end = "")
 assert(test_url.status == 200)
+print(str(test_url.status))
+
+print("Checking parent (None): ", end = "")
 assert(test_url.parent is None)
+print("None")
+
+print("Checking # of links (5): ", end = "")
 assert(len(test_url.links) == 5)
+print(len(test_url.links))
 
 test_list = [
     "https://web.engr.oregonstate.edu/~metzgerb/crawler/relative.html",
@@ -128,5 +173,11 @@ test_list = [
 test_list.sort()
 test_url.links.sort()
 
+print("Checking links match: ", end = "")
 assert(test_url.links == test_list)
+print("PASSED\n\n")
+
 del test_url
+
+
+print("ALL TESTS PASSED")
