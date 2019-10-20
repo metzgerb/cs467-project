@@ -112,22 +112,28 @@ def get_links(url, parent = None):
         parser.close()
         
         #parse original url
-        parsed = urllib.parse.urlparse(link.url, scheme="http")
+        parsed_url = urllib.parse.urlparse(link.url, scheme="http")
         
         #iterate through hrefs and convert relative URLs
         for i in range(len(link.links)):
             #check for "/" beginning
             if link.links[i][0] == "/":
                 #add scheme and networkloc to url
-                link.links[i] = parsed.scheme + "://" + parsed.netloc + link.links[i]
+                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + link.links[i]
             
             #check for "./" beginning
             elif link.links[i][:2] == "./":
                 #add scheme, networkloc, and all but last part of path to url
-                link.links[i] = parsed.scheme + "://" + parsed.netloc + parsed.path[:parsed.path.rfind('/')] + link.links[i][1:]
+                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:parsed_url.path.rfind('/')] + link.links[i][1:]
             
             #check for "../" beginning
             elif link.links[i][:3] == "../":
+                #split original path
+                split_path = parsed_url.path.split("/")
+                print(split_path)
+                #split link
+                split_link = link.links[i].split("/")
+                print(split_link)
                 print("'../' detected: %s" % link.links[i])
                 
         #testing DELETE
