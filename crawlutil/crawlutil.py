@@ -130,11 +130,29 @@ def get_links(url, parent = None):
             elif link.links[i][:3] == "../":
                 #split original path
                 split_path = parsed_url.path.split("/")
-                print(split_path)
+                
+                #delete original page from path
+                del split_path[-1]
+                
                 #split link
                 split_link = link.links[i].split("/")
-                print(split_link)
-                print("'../' detected: %s" % link.links[i])
+                
+                #iterate through links in reverse order
+                j = len(split_link) - 1 
+                while j >= 0:
+                    #check for ".."
+                    if split_link[j] == "..":
+                        #remove from link
+                        del split_link[j]
+                    
+                        #remove a directory from the original path
+                        del split_path[-1]
+                    
+                    #reduce index counter
+                    j -= 1
+                
+                #combine resulting original path and remaining link path with scheme and netloc
+                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + "/".join(split_path) + "/" + "/".join(split_link)
                 
         #testing DELETE
         #print(link)
