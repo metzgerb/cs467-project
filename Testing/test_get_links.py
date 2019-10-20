@@ -11,7 +11,12 @@ Last Modified: 2019-10-20
 
 
 #import dependencies
-import crawlutil.crawlutil as cu
+import sys, os
+
+#add package path to syspath
+sys.path.append(os.path.join(os.getcwd(),'crawlutil'))
+
+import crawlutil as cu
 
 """
 Name: get_links Absolute Path Links
