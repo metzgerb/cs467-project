@@ -1,0 +1,208 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/*nav bar CSS settings*/
+nav ul {
+    overflow: visible;
+    background-color: #333;
+    list-style-type: none;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+}
+
+nav li {
+    float: left;
+}
+
+nav li a, .dropbtn {
+    display: inline-block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+nav li a:hover, .dropdown:hover .dropbtn {
+    background-color: #ddd;
+    color: black;
+}
+
+nav li a.active {
+    background-color: #6596E6;
+    color: white;
+}
+
+nav li .dropdown {
+    display: inline-block;
+}
+
+nav .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+nav .dropdown-content a {
+    float: none;
+    color: white;
+    padding: 14x 16px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+nav .dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/*Body settings*/
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 40px;
+}
+
+/*headers, paragraphs, links */
+h2, h4, p {
+    padding: 5px;
+    margin: 10px;
+}
+
+a.sort-link:link,
+a.sort-link:visited {
+    color: black;
+    text-decoration: none;
+}
+
+
+/*table settings*/ 
+table, th, tr, td {
+    border-collapse: collapse;
+    margin: 10px;
+    padding: 5px 10px;
+}
+
+table {
+    margin: 10px auto;
+    table-layout: auto;
+    
+}
+
+th {
+    text-align: center;
+    background-color: #6596E6;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #E6E5E5;
+}
+
+.compact-table {
+    font-size: 14px;
+    text-align: center;
+    margin: 5px auto;
+}
+
+ul {
+    list-style-type: disc;
+    margin-top: 20px;
+    margin-left: 60px;
+    margin-bottom: 20px;
+}
+
+ul ul {
+    list-style-type: circle;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.button-bar {
+    text-align: center;
+}
+
+.button-bar a {
+    display: inline-block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 80px 100px 80px 100px;
+    margin: 8px 0;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: bold;
+    background-color: #333;
+}
+
+.button-bar a:hover {
+    background-color: #6596E6;
+}
+
+.pagination {
+    text-align: center;
+}
+
+/*form formatting*/
+input[type=text] {
+    margin: 8px 0;
+}
+
+input[type=checkbox]{
+    margin: 8px 10px;
+}
+
+textarea {
+    height: 150px;
+    resize: none;
+}
+
+input[type=submit] {
+    background-color: #333;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 2px 4px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: inherit;
+    left: 400px;
+}
+
+input[type=submit]:hover {
+    background-color: #6596E6;
+}
+
+input[type=text], select, textarea {
+    font-family: inherit;
+    font-size: 100%;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    width: 400px;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+}
+
+.expandedForm label {
+    display: inline-block;
+    width: auto;
+    text-align: right;
+}
