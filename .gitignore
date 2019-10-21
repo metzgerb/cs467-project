@@ -1,2 +1,4 @@
 *.pyc
 /__pycache__
+/.vs/slnx.sqlite
+/.vs/ProjectSettings.json
