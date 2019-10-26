@@ -109,7 +109,7 @@ del test_url
 Name: get_links keyword negative test keyword not found anywhere
 Target: crawlutil.get_links()
 Input: "index.html", keyword = "walnut" not found on page
-Expected Output: URL object with key flag set to True
+Expected Output: URL object with key flag set to False
 """
 keyword = "walnut"
 print("Testing no keyword (" + keyword + "): " + ROOT_URL + "index.html")
@@ -130,7 +130,7 @@ del test_url
 Name: get_links keyword negative test keyword found in attribute of tag
 Target: crawlutil.get_links()
 Input: "index.html", keyword = "bacon" in class attribute of tag
-Expected Output: URL object with key flag set to True
+Expected Output: URL object with key flag set to False
 """
 keyword = "bacon"
 print("Testing keyword in attribute of tag (" + keyword + "): " + ROOT_URL + "index.html")
@@ -151,12 +151,33 @@ del test_url
 Name: get_links keyword negative test keyword found in tag (bad syntax)
 Target: crawlutil.get_links()
 Input: "index.html", keyword = "cheesecake" in tag (bad syntax)
-Expected Output: URL object with key flag set to True
+Expected Output: URL object with key flag set to False
 """
 keyword = "cheesecake"
 print("Testing keyword in tag (" + keyword + "): " + ROOT_URL + "index.html")
 test_url = cu.URL()
 test_url = cu.get_links(ROOT_URL + "index.html", keyword)
+
+#check for failures
+print("Checking key attribute (False): ", end = "")
+assert(not test_url.key)
+print(str(test_url.key))
+
+print("PASSED\n\n")
+
+del test_url
+
+
+"""
+Name: get_links no keyword provided
+Target: crawlutil.get_links()
+Input: "index.html"
+Expected Output: URL object with key flag set to True
+"""
+
+print("Testing no keyword: " + ROOT_URL + "index.html")
+test_url = cu.URL()
+test_url = cu.get_links(ROOT_URL + "index.html")
 
 #check for failures
 print("Checking key attribute (False): ", end = "")
