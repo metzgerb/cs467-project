@@ -5,12 +5,14 @@
 *******************************************************************************
 
 CREATED: 2019-10-17
-LAST MODIFIED: 2019-10-20
+LAST MODIFIED: 2019-10-26
+
 
 AUTHORS: 
 Christopher Beall (beallch@oregonstate.edu)
 Helen Jiang (Jianghel@oregonstate.edu)
 Brian Metzger (metzgerb@oregonstate.edu)
+
 
 PROJECT DESCRIPTION: This graphical web crawler is responsible for searching 
 through links from a starting web page and displaying the results through a 
@@ -21,6 +23,7 @@ PROJECT STRUCTURE: This project contains directories for project modules,
 testing, and documentation. Code will also be maintained in the root of the 
 project directory.
 
+
 TESTING INSTRUCTIONS:
 HTML pages are provided (in the Testing directory) for use in testing along 
 with test scripts for the crawler component of the project. To use these, 
@@ -29,6 +32,6 @@ follow the instructions below:
 1. Host the templates in a place of your choosing
 2. Update the ROOT_URL variable in the test scripts
 3. Use a commandline utility to call the test script from the project root
-	EXAMPLE: "Python .\Testing\test_get_links.py"
+	EXAMPLE: "python3 .\Testing\test_get_links.py"
 	NOTE: If you try to call the test scripts from the Testing directory,
 		Python will fail to find the module.
