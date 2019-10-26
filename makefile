@@ -5,8 +5,9 @@ crawl: crawl.py ./crawlutil/crawlutil.py
 	chmod +x $^
 
 test:
-	dos2unix ./Testing/test_*.py
-	chmod +x ./Testing/test_*.py
+	cd ./Testing
+	dos2unix test_*.py
+	chmod +x test_*.py
 
 clean: 
 	chmod -x ./crawl.py
