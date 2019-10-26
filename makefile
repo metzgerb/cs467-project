@@ -1,11 +1,13 @@
 all: crawl
 
-crawl: crawl.py ./crawlutil/crawlutil.py ./Testing/test_get_links.py ./Testing/test_keywords.py
+crawl: crawl.py ./crawlutil/crawlutil.py ./Testing/test_%
 	dos2unix $^
 	chmod +x $^
+
+test: 
+	echo "test"
 
 clean: 
 	chmod -x ./crawl.py
 	chmod -x ./crawlutil/crawlutil.py
-	chmod -x ./Testing/test_get_links.py
-	chmod -x ./Testing/test_keywords.py
+	chmod -xr ./Testing/test_*.py
