@@ -12,7 +12,10 @@ Last Modified: 2019-10-26
 #import dependencies
 import urllib.request
 import urllib.parse
-from html.parser import HTMLParser
+#from html.parser import HTMLParser
+#import random
+from Url import URL
+from LinkParser import LinkParser
 
 """
 Class Name: URL
@@ -20,7 +23,7 @@ Description: Has variables for tracking the data of URL as it is crawled
 Member functions: __str__ (used to output the current data in the URL for logging)
         __init__ (used for initializing an empty URL object)
 """
-class URL():
+'''class URL():
     def __init__(self, url = None):
         self.url = url
         self.status = None
@@ -53,7 +56,24 @@ class URL():
             response += "\n" + link
         
         return response
+    
+    
+    #returns a random link from URL.links
+    #optionally takes a list of links to ignore when returning a random link
+    #returns None when there are no links that can be returned
+    def get_random(self, black_list = []):
+        #copy links that do not appear in black_list
+        #source: https://stackoverflow.com/questions/4211209/remove-all-the-elements-that-occur-in-one-list-from-another
+        rand_links = [x for x in self.links if x not in black_list]
 
+        #check if any links remaining
+        if rand_links:
+            rand_url = rand_links[random.randint(0,len(rand_links))]
+        #no links remain to choose from
+        else:
+            return None      
+        
+'''
 """
 Class Name: LinkParser
 Description: Inherited from HTMLParser, customizes tag parsing functions
@@ -61,7 +81,7 @@ Member functions: handle_starttag (collects all start tags)
     handle_startendtag (collects all self closing tags)
     handle_data (collects data and searches for keywords)
 """
-class LinkParser(HTMLParser):
+'''class LinkParser(HTMLParser):
     
     def __init__(self, keyword = None):
         super().__init__()
@@ -105,7 +125,7 @@ class LinkParser(HTMLParser):
         self.links = []
         self.no_index = False
         self.key_found = False
-
+'''
 
 """
 Function Name: get_links
