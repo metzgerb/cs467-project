@@ -5,7 +5,7 @@
 *******************************************************************************
 
 CREATED: 2019-10-17
-LAST MODIFIED: 2019-10-26
+LAST MODIFIED: 2019-10-27
 
 
 AUTHORS: 
@@ -35,3 +35,7 @@ follow the instructions below:
 	EXAMPLE: "python3 .\Testing\test_get_links.py"
 	NOTE: If you try to call the test scripts from the Testing directory,
 		Python will fail to find the module.
+4. To run all tests, use the provided makefile:
+	a. 'make tests' converts to unix format and makes the .py files executable
+	b. 'make run_tests' runs all tests (summary output only)
+	c. 'make run_tests_d' runs all tests in debug mode (verbose output)

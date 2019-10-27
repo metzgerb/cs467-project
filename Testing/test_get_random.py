@@ -7,7 +7,7 @@ Description: Runs tests to check the get_random function of the URL class used
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-26
-Last Modified: 2019-10-26
+Last Modified: 2019-10-27
 """
 
 
@@ -21,28 +21,55 @@ import crawlutil as cu
 
 ROOT_URL = "https://web.engr.oregonstate.edu/~metzgerb/crawler/"
 
+#set debug flag and counters
+DEBUG = False
+passed = 0
+failed = 0
+
+
+if len(sys.argv) > 1:
+    DEBUG = True 
+
+print("Running get_random() tests...", end = "")
+
+if DEBUG:
+    print("")
 """
-Name: get_links Relative Path Links in grandparent directory
-Target: crawlutil.get_links()
+Name: get_random with no black_list
+Target: URL.get_random()
 Input: "sub/sub/subsub1.html"
-Expected Output: URL object with 5 links, no parent, and a status of 200
+Expected Output: random link from the URL object links
 """
-print("Testing Relative Path Links in Grandparent Directory: " + ROOT_URL + "sub/sub/subsub1.html")
+if DEBUG:
+    print("Testing get_random: " + ROOT_URL + "sub/sub/subsub1.html")
+
 test_url = cu.URL()
 test_url = cu.get_links(ROOT_URL + "sub/sub/subsub1.html")
 
+test_random = test_url.get_random()
+
 #check for failures
-print("Checking status (200): ", end = "")
-assert(test_url.status == 200)
-print(str(test_url.status))
+if DEBUG:
+    print("Checking random link in URL object (True): ", end = "")
 
-print("Checking parent (None): ", end = "")
-assert(test_url.parent is None)
-print("None")
+try:
+    assert(test_random in test_url.links)
+    
+    passed += 1
+    
+    if DEBUG:
+        
+        print("True")
+        print("PASSED\n\n")
+except AssertionError:
+    
+    failed += 1
+    
+    if DEBUG:
+        print("False")
+        print("FAILED\n\n")
 
-print("Checking # of links (5): ", end = "")
-assert(len(test_url.links) == 5)
-print(len(test_url.links))
+del test_url
 
 test_list = [
     ROOT_URL + "relative.html",
@@ -52,15 +79,5 @@ test_list = [
 	ROOT_URL + "badlink.html",
 ]
 
-#sort lists
-test_list.sort()
-test_url.links.sort()
 
-print("Checking links match: ", end = "")
-assert(test_url.links == test_list)
-print("PASSED\n\n")
-
-del test_url
-
-
-print("ALL TESTS PASSED")
+print("PASSED: %d FAILED: %d" % (passed, failed))
