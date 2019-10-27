@@ -27,4 +27,4 @@ clean:
 	chmod -x ./crawlutil/crawlutil.py
 	chmod -x ./Testing/test_keywords.py
 	chmod -x ./Testing/test_get_links.py
-	chmod -x ./Testing/test_get_random.p
+	chmod -x ./Testing/test_get_random.py
