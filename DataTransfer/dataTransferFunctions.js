@@ -58,3 +58,15 @@ function makeTreeRecursively(node, jsonObj) {
         makeTreeRecursively(child, jsonObj.children[i]);
     }
 }
+
+function makeUrlDict(jsonArray) {
+    var dict = {};
+    jsonArray.forEach(function (url) {
+        var urlNode = new Node()
+    });
+    for (i = 0; i < jsonArray.size(); i++) {
+        // Make a map with URL as key and URL object as item
+        dict[jsonArray[i].URL] = jsonArray[i];
+    }
+}
+

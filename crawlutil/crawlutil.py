@@ -17,7 +17,7 @@ from html.parser import HTMLParser
 """
 Class Name: URL
 Description: Has variables for tracking the data of URL as it is crawled
-Member functions: __str__ (used to output the current data in the URL for logging)
+Member functions: __str__ (used to output the current data in the URL as JSON)
         __init__ (used for initializing an empty URL object)
 """
 class URL():
@@ -30,29 +30,30 @@ class URL():
     
     def __str__(self):
         #TODO: define output for logging (work with Christopher)
-        response = "URL: " 
+        response = '{"URL: ' 
         if self.url:
             response += self.url
             
-        response += "\nSTATUS: "
+        response += ',"STATUS": '
         if self.status:
             response += str(self.status)
         
-        response += "\nParent: " 
+        response += ',"Parent": ' 
         if self.parent:
             response += self.parent
         
-        response += "\nKeyword Found: " 
+        response += ',"Keyword Found": ' 
         if self.key:
             response += "True"
         else:
             response += "False"
         
-        response += "\nLINKS:"
-        for link in self.links:
-            response += "\n" + link
-        
+        response += ',"LINKS": ['
+        response += ', '.join(self.links)
+        response += ']'
+
         return response
+
 
 """
 Class Name: LinkParser
@@ -171,3 +172,17 @@ def get_links(url, parent = None):
         #print(link)
     
     return link
+
+
+def output_links(url_list):
+    """
+    THis will loop through a list of URL objects and form them into one large JSON string, and then print this string to 
+    stdout
+    IN: An array of URL objects
+    OUT: A string that should be in JSON format.
+    """
+    json_string = "["
+    for url in url_list:
+        json_string += url.__str__
+    json_string += ']'
+    print(json_string)
