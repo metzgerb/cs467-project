@@ -14,10 +14,14 @@ exports.sendStartingLink = function (req, res) {
     var spawn = require("child_process").spawn;
 
     var process = spawn('python', ["./createJson.py",
-        req.query.link]); 
+        req.body.link]);
 
     process.stdout.on('data', function (data) {
-        res.send(data.toString());
+        jsonArray = JSON.parse(data);
+        var root = makeLinkTree(jsonArray);
+        res.write(JSON.stringify(jsonArray));
+        traverseAndWrite(root, res);
+        res.end();
     })
 }
 
@@ -25,6 +29,7 @@ class Node {
     constructor(link) {
         this.link = link;
         this.childrenArray = [];
+        this.parent = null;
     }
 }
 
@@ -59,8 +64,16 @@ function makeTreeRecursively(node, jsonObj) {
     }
 }
 
-function makeUrlDict(jsonArray) {
+function makeLinkTree(jsonArray) {
     var dict = {};
+    var root;
+    console.log(jsonArray);
+    /*
+    for (i = 0; i < jsonArray.length; i++) {
+        // Make a map with URL as key and URL object as item
+        dict[jsonArray[i].URL] = jsonArray[i];
+    }
+    */
     jsonArray.forEach(function (urlObject) {
         var newNode;
         if (urlObject.URL in dict) {
@@ -70,8 +83,8 @@ function makeUrlDict(jsonArray) {
             newNode = new Node(urlObject.URL);
             dict[urlObject.URL] = newNode;
         }
-        if (urlObject.URL == null) {
-            var root = newNode;
+        if (urlObject.Parent === 'null') {
+            root = newNode;
         }
         else {
             var parentNode;
@@ -79,14 +92,24 @@ function makeUrlDict(jsonArray) {
                 parentNode = new Node();
                 dict[urlObject.Parent] = parentNode;
             }
+            else {
+                parentNode = dict[urlObject.Parent];
+            }
             parentNode.childrenArray.push(newNode);
             newNode.parent = parentNode;
         }
 
     });
-    for (i = 0; i < jsonArray.size(); i++) {
-        // Make a map with URL as key and URL object as item
-        dict[jsonArray[i].URL] = jsonArray[i];
-    }
+    console.log(root);
+    console.log(dict);
+    return root;
 }
 
+//This will traverse the tree and print preorder.
+function traverseAndWrite(node, res) {
+
+    for (i = 0; i < node.childrenArray.length; i++) {
+        traverseAndWrite(node.childrenArray[i], res);
+    }
+    res.write(node.link);
+}

@@ -10,7 +10,7 @@ Last Modified: 2019-10-21
 
 
 import sys
-
-data  = {'link': sys.argv[1]}
+extra = sys.argv[1]
+data  = '[{"URL": "'+extra+ '", "STATUS": "null", "Parent": "null", "Keyword Found": "False", "LINKS": ["null"]}, {"URL": "www.ex.com", "STATUS": "null", "Parent":"'+extra+'", "Keyword Found": "False", "LINKS": ["null"]}]'
 
 print(data)
