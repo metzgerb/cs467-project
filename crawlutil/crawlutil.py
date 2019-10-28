@@ -50,7 +50,7 @@ class URL():
         
         response += ',"LINKS": ['
         response += ', '.join(self.links)
-        response += ']'
+        response += ']}'
 
         return response
 
@@ -182,7 +182,7 @@ def output_links(url_list):
     OUT: A string that should be in JSON format.
     """
     json_string = "["
-    for url in url_list:
-        json_string += url.__str__
+    comma_join = ', '.join(url_list)
+    json_string += comma_join
     json_string += ']'
     print(json_string)
