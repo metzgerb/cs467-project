@@ -7,7 +7,7 @@ Description: Runs tests to check the keyword functionality of get_links
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-26
-Last Modified: 2019-10-27
+Last Modified: 2019-10-28
 """
 
 
@@ -298,6 +298,105 @@ except AssertionError:
         print(str(test_url.key))
         print("FAILED\n\n")
         
+del test_url
+
+
+"""
+Name: get_links keyword test keyword found in title tag
+Target: crawlutil.get_links()
+Input: "index.html", keyword = "Tortilla" in header title tag
+Expected Output: URL object with key flag set to True
+"""
+keyword = "Tortilla"
+if DEBUG:
+    print("Testing keyword in tag (" + keyword + "): " + ROOT_URL + "index.html")
+
+test_url = cu.URL()
+test_url = cu.get_links(ROOT_URL + "index.html", keyword)
+
+#check for failures
+if DEBUG:
+    print("Checking key attribute (True): ", end = "")
+
+try:
+    assert(test_url.key)
+    passed += 1
+    if DEBUG:
+        print(str(test_url.key))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(test_url.key))
+        print("FAILED\n\n")
+
+del test_url
+
+
+"""
+Name: get_links keyword negative test keyword found in meta tag
+Target: crawlutil.get_links()
+Input: "index.html", keyword = "Brian" in header meta tag
+Expected Output: URL object with key flag set to False
+"""
+keyword = "Brian"
+if DEBUG:
+    print("Testing keyword in tag (" + keyword + "): " + ROOT_URL + "index.html")
+
+test_url = cu.URL()
+test_url = cu.get_links(ROOT_URL + "index.html", keyword)
+
+#check for failures
+if DEBUG:
+    print("Checking key attribute (False): ", end = "")
+
+try:
+    assert(not test_url.key)
+    passed += 1
+    if DEBUG:
+        print(str(test_url.key))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(test_url.key))
+        print("FAILED\n\n")
+
+del test_url
+
+
+"""
+Name: get_links keyword test keyword found in header (bad syntax)
+Target: crawlutil.get_links()
+Input: "index.html", keyword = "Tortilla" in header (bad syntax)
+Expected Output: URL object with key flag set to True
+"""
+keyword = "turkey"
+if DEBUG:
+    print("Testing keyword in tag (" + keyword + "): " + ROOT_URL + "index.html")
+
+test_url = cu.URL()
+test_url = cu.get_links(ROOT_URL + "index.html", keyword)
+
+#check for failures
+if DEBUG:
+    print("Checking key attribute (True): ", end = "")
+
+try:
+    assert(test_url.key)
+    passed += 1
+    if DEBUG:
+        print(str(test_url.key))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(test_url.key))
+        print("FAILED\n\n")
+
 del test_url
 
 
