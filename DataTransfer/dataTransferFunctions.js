@@ -36,7 +36,7 @@ class Tree {
 
     traverse(node, stack) {
         for (i = 0; i < node.children.length; i++) {
-            traverse(node.children[i], stack)
+            traverse(node.children[i], stack);
         }
         stack.push(node.link);
     }
@@ -61,8 +61,28 @@ function makeTreeRecursively(node, jsonObj) {
 
 function makeUrlDict(jsonArray) {
     var dict = {};
-    jsonArray.forEach(function (url) {
-        var urlNode = new Node()
+    jsonArray.forEach(function (urlObject) {
+        var newNode;
+        if (urlObject.URL in dict) {
+            newNode = dict[urlObject.URL];
+        }
+        else {
+            newNode = new Node(urlObject.URL);
+            dict[urlObject.URL] = newNode;
+        }
+        if (urlObject.URL == null) {
+            var root = newNode;
+        }
+        else {
+            var parentNode;
+            if (!(urlObject.Parent in dict)) {
+                parentNode = new Node();
+                dict[urlObject.Parent] = parentNode;
+            }
+            parentNode.childrenArray.push(newNode);
+            newNode.parent = parentNode;
+        }
+
     });
     for (i = 0; i < jsonArray.size(); i++) {
         // Make a map with URL as key and URL object as item

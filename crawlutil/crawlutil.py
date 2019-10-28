@@ -21,7 +21,7 @@ Member functions: __str__ (used to output the current data in the URL as JSON)
         __init__ (used for initializing an empty URL object)
 """
 class URL():
-    def __init__(self, url = None):
+    def __init__(self, url = "null"):
         self.url = url
         self.status = None
         self.parent = None
