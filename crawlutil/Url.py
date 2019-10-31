@@ -26,36 +26,36 @@ class URL():
         self.parent = None
         self.key = False
         self.links = []
-    
-    def __str__(self):
+
+     def __str__(self):
         #TODO: define output for logging (work with Christopher)
-        response = "URL: " 
+        response = '{"URL: '
         if self.url:
             response += self.url
-            
-        response += "\nSTATUS: "
+
+        response += ',"STATUS": '
         if self.status:
             response += str(self.status)
-        
-        response += "\nParent: " 
+
+        response += ',"Parent": '
         if self.parent:
             response += self.parent
-        
-        response += "\nKeyword Found: " 
+
+        response += ',"Keyword Found": '
         if self.key:
             response += "True"
         else:
             response += "False"
-        
-        response += "\nLINKS:"
-        for link in self.links:
-            response += "\n" + link
-        
+
+        response += ',"LINKS": ['
+        response += ', '.join(self.links)
+        response += ']}'
+
         return response
-    
+
     """
     Function Name: get_random
-    Description: returns a random URL from a URL class objects' links 
+    Description: returns a random URL from a URL class objects' links
     Inputs: takes an optional list of URL strings that should not be chosen
     Outputs: returns a string representing a URL or None
     """
@@ -63,7 +63,7 @@ class URL():
         #copy links that do not appear in black_list
         #source: https://stackoverflow.com/questions/4211209/remove-all-the-elements-that-occur-in-one-list-from-another
         rand_links = [x for x in self.links if x not in black_list]
-        
+
         #check if any links remaining
         if len(rand_links) > 0:
             return rand_links[random.randint(0,len(rand_links)- 1)]
