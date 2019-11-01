@@ -13,13 +13,15 @@ exports.sendStartingLink = function (req, res) {
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-    var process = spawn('python', ["./createJson.py",
+    var process = spawn('python', ["./DataTransfer/createJson.py",
         req.body.link]);
-
+    console.log('before');
     process.stdout.on('data', function (data) {
         jsonArray = JSON.parse(data);
+	console.log('beforeTree');
         var root = makeLinkTree(jsonArray);
         res.write(JSON.stringify(jsonArray));
+	console.log('beforeRecursion');
         traverseAndWrite(root, res);
         res.end();
     })

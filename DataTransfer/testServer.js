@@ -4,14 +4,8 @@
  * Course: CS467 (Fall 2019)
  * Last Modified: 2019-10-21
  */
-process.on('uncaughtException', UncaughtExceptionHandler);
 
-function UncaughtExceptionHandler(err) {
-    console.log("Uncaught Exception Encountered!!");
-    console.log("err: ", err);
-    console.log("Stack trace: ", err.stack);
-    setInterval(function () { }, 1000);
-}
+var port = process.env.PORT || 8080
 
 const dataTransfer = require('./dataTransferFunctions');
 var express = require('express');
@@ -22,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 
 
-app.listen(1337, function () {
-    console.log('port 1337');
+app.listen(port, function () {
+    console.log('Starting up server');
 })
 
 
