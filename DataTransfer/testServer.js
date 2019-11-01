@@ -7,7 +7,7 @@
 
 var port = process.env.PORT || 8080
 
-const dataTransfer = require('DataTransfer/dataTransferFunctions');
+const dataTransfer = require('./dataTransferFunctions');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
