@@ -29,14 +29,18 @@ def get_links(url, keyword = None, parent = None):
     link = URL(url)
     link.parent = parent
     
-    #make get request
-    response = urllib.request.urlopen(link.url)
+    try:
+        #make get request
+        response = urllib.request.urlopen(link.url)
+        
+        #set status
+        link.status = response.getcode()        
     
-    #set status
-    link.status = response.getcode()
-    
-    #read response data
-    page = str(response.read())
+    except urllib.error.HTTPError as e:
+        #set response to nothing since an error occurred
+        response = None
+        #log the returned status code
+        link.status = e.code
     
     #TODO: check for no index meta tag in header 
     #NEED TO LOOK INTO GETTING ROBOTS.TXT IN ADDITION TO PARSING META TAGS AND 
@@ -44,6 +48,11 @@ def get_links(url, keyword = None, parent = None):
     
     #check for errors from response
     if response:      
+        #read response data
+        page = str(response.read())
+        #remove any unwanted newlines prior to parsing
+        page = page.replace("\\n","")
+        
         #parse HTML content
         parser = LinkParser(keyword)
         parser.reset_parser()
@@ -63,8 +72,12 @@ def get_links(url, keyword = None, parent = None):
         
         #iterate through hrefs and convert relative URLs
         for i in range(len(link.links)):
-            #check for "/" beginning
-            if link.links[i][0] == "/":
+            #check for empty string
+            if len(link.links[i]) == 0:
+                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + link.links[i]
+            
+            #check for "/" or "?" at beginning
+            elif link.links[i][0] == "/" or link.links[i][0] == "?":
                 #add scheme and networkloc to url
                 link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + link.links[i]
             
@@ -72,7 +85,7 @@ def get_links(url, keyword = None, parent = None):
             elif link.links[i][:2] == "./":
                 #add scheme, networkloc, and all but last part of path to url
                 link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:parsed_url.path.rfind('/')] + link.links[i][1:]
-            
+                
             #check for "../" beginning
             elif link.links[i][:3] == "../":
                 #split original path
@@ -100,8 +113,56 @@ def get_links(url, keyword = None, parent = None):
                 
                 #combine resulting original path and remaining link path with scheme and netloc
                 link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + "/".join(split_path) + "/" + "/".join(split_link)
+            
+            #account for relative links with no ./, ../, or / notation
+            else:
+                #parse link
+                child_url = urllib.parse.urlparse(link.links[i], scheme="http")
                 
-        #testing DELETE
-        #print(link)
+                #check for empty networkloc
+                if child_url.netloc == '':
+                    #replace empty string with net location from original url
+                    new_child = child_url._replace(netloc = parsed_url.netloc)
+                    
+                    #set original to new child
+                    child_url = new_child
+                
+                #join child_url again
+                link.links[i] = urllib.parse.urlunparse(child_url)
     
     return link
+
+
+"""
+Function Name: depth_search
+Description: Uses a Depth First Search algorithm to construct a list of links
+    that can be followed from 
+Inputs: takes a string representing a URL to be crawled, an integer for the 
+    maximum number of links to follow and a string representing a keyword to 
+    be searched for
+Outputs: returns a list of URL objects
+"""
+def depth_search(url, link_limit, keyword):
+    #set link counter and initial variables
+    links_visited = []
+    parent = None
+    tree = []
+    
+    #loop until link_limit reached
+    while len(links_visited) < link_limit and url is not None:
+        #get initial link
+        link = get_links(url, keyword, parent)
+        
+        #add link to  and add to tree
+        links_visited.append(url)
+        tree.append(link)
+        
+        #get_random link
+        url = link.get_random(links_visited)
+        parent = link.url
+        
+        #check if keyword found
+        if link.key:
+            break
+        
+    return tree
