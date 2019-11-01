@@ -13,7 +13,7 @@ exports.sendStartingLink = function (req, res) {
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-    var process = spawn('python', ["./createJson.py",
+    var process = spawn('python', ["../crawlutil/createJson.py",
         req.body.link]);
 
     process.stdout.on('data', function (data) {
