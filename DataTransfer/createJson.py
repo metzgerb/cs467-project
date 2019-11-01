@@ -1,4 +1,4 @@
-""" 
+"""
 Program Name: createJson.py
 Description: Used for testing the retrieval and sending of information between UNIX and website
 Author: Christopher Beall (beallch@oregonstate.edu)
@@ -11,8 +11,8 @@ Last Modified: 2019-10-21
 
 import sys
 extra = sys.argv[1]
-data  = '[{"URL": "'+extra+ '", "STATUS": "null", "Parent": "null", "Keyword Found": "False", "LINKS": ["null"]},'/ 
-'{"URL": "www.ex.com", "STATUS": "null", "Parent":"'+extra+'", "Keyword Found": "False", "LINKS": ["null"]},'/
+data  = '[{"URL": "'+extra+ '", "STATUS": "null", "Parent": "null", "Keyword Found": "False", "LINKS": ["null"]},'\
+'{"URL": "www.ex.com", "STATUS": "null", "Parent":"'+extra+'", "Keyword Found": "False", "LINKS": ["null"]},'\
 '{"URL": "www.ex2.com", "STATUS": "null", "Parent":"www.ex.com", "Keyword Found": "False", "LINKS": ["null"]}]'
 
 print(data)
