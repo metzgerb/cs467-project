@@ -71,3 +71,4 @@ class URL():
         #no links remain to choose from
         else:
             return None
+    __repr__ = __str__

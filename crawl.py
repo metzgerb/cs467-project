@@ -33,10 +33,13 @@ def main(url, search_type, link_limit, keyword = None):
         tree = cu.depth_search(url, link_limit, keyword)
                 
     #log the resulting output
+    string_list = []
     for node in tree:
-        print(node)
-    
+        string_list.append(node.__str__())
+
+    print('[' + ','.join(string_list) + ']')
     return 0
+
 
 if __name__ == "__main__":
     #check number of arguments
@@ -50,4 +53,3 @@ if __name__ == "__main__":
     else:
         #exit with code 1
         sys.exit(1)
-    
