@@ -1,1 +1,1 @@
-web: node DataTransfer/testServer.js
+web: node testServer.js
