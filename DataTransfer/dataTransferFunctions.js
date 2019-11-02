@@ -13,18 +13,21 @@ exports.sendStartingLink = function (req, res) {
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-    var process = spawn('python', ["./DataTransfer/createJson.py",
-        req.body.link]);
-    console.log('before');
+    var process = spawn('python3', ["./crawl.py", req.body.link, req.body.search_type, req.body.link_limit]);
+
     process.stdout.on('data', function (data) {
         jsonArray = JSON.parse(data);
-	console.log('beforeTree');
+
         var root = makeLinkTree(jsonArray);
         res.write(JSON.stringify(jsonArray));
-	console.log('beforeRecursion');
         traverseAndWrite(root, res);
         res.end();
     })
+    process.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+});
+
+
 }
 
 class Node {
@@ -69,7 +72,7 @@ function makeTreeRecursively(node, jsonObj) {
 function makeLinkTree(jsonArray) {
     var dict = {};
     var root;
-    console.log(jsonArray);
+
     /*
     for (i = 0; i < jsonArray.length; i++) {
         // Make a map with URL as key and URL object as item
@@ -102,8 +105,6 @@ function makeLinkTree(jsonArray) {
         }
 
     });
-    console.log(root);
-    console.log(dict);
     return root;
 }
 

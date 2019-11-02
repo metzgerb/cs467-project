@@ -6,11 +6,13 @@ Description: URL crawling program that can search DFS or BFS through links.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-10-20
+Last Modified: 2019-11-01
 """
 
 #import dependencies
-import crawlutil as cu
+import sys, os
+sys.path.append(os.path.join(os.getcwd(),'crawlutil')) #add package path to syspath
+import crawlutil.crawlutil as cu
 
 """
 Function Name: main
@@ -20,26 +22,34 @@ Inputs: takes a string representing the starting URL, a char flag for type of
     halting the search
 Outputs: ???
 """
-def main(url, search_type, link_limit, keyword = None):
-    print("main crawl function")
-    
+def main(url, search_type, link_limit, keyword = None):   
     #Validate variables
     
-    #initialize any beginning variables
-    
     #branch based on DFS or BFS (Use different functions for each, general flow below)
-        #loop until out of links or link limit hit or until keyword found
-            #get_links
-            #choose random link to follow
-                #apply BFS or DFS
+    if True:
+        tree = cu.depth_search(url, link_limit, keyword)
+    else:
+        #TODO: change to breadth first search once written
+        tree = cu.depth_search(url, link_limit, keyword)
                 
     #log the resulting output
-    #TODO: determine output with Christopher
-    
+    string_list = []
+    for node in tree:
+        string_list.append(node.__str__())
+
+    print('[' + ','.join(string_list) + ']')
     return 0
 
+
 if __name__ == "__main__":
-    #TODO: update once we determine what input will be from website/data transfer utility
-    #may need if statement for when keyword not supplied?
-    main("1","2","3")
-    
+    #check number of arguments
+    if len(sys.argv) == 4 and sys.argv[3].isnumeric():
+        #sys.exit(main("https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html","2",5))
+        sys.exit(main(sys.argv[1],sys.argv[2],int(sys.argv[3])))
+    #keyword provided
+    elif len(sys.argv) == 5 and sys.argv[3].isnumeric():
+        #sys.exit(main("https://web.engr.oregonstate.edu/~metzgerb/crawler/index.html","2",5,"turkey"))
+        sys.exit(main(sys.argv[1],sys.argv[2],int(sys.argv[3]),sys.argv[4]))
+    else:
+        #exit with code 1
+        sys.exit(1)
