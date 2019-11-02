@@ -145,7 +145,7 @@ Outputs: returns a list of URL objects
 def depth_search(url, link_limit, keyword):
     #set link counter and initial variables
     links_visited = []
-    parent = None
+    parent = "null"
     tree = []
     
     #loop until link_limit reached

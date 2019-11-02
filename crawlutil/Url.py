@@ -30,26 +30,26 @@ class URL():
     #output string format designed by Christopher Beall
     def __str__(self):
         #store URL
-        response = '{"URL: '
+        response = '{"URL": '
         if self.url:
-            response += self.url
+            response += '"' + self.url + '"'
         #store Status
         response += ',"STATUS": '
         if self.status:
-            response += str(self.status)
+            response += '"' + str(self.status) + '"'
         #store parent
         response += ',"Parent": '
         if self.parent:
-            response += self.parent
+            response += '"' + self.parent + '"'
         #store keyword
         response += ',"Keyword Found": '
         if self.key:
-            response += "True"
+            response += '"True"'
         else:
-            response += "False"
+            response += '"False"'
         #store links
         response += ',"LINKS": ['
-        response += ', '.join(self.links)
+        response += ','.join(['"' + link + '"' for link in self.links])
         response += ']}'
 
         return response
