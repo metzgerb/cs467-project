@@ -13,7 +13,7 @@ exports.sendStartingLink = function (req, res, r) {
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-    var process = spawn('python', ["./crawl.py", req.body.link, req.body.search_type, req.body.max]);
+    var process = spawn('python3', ["./crawl.py", req.body.link, req.body.search_type, req.body.max]);
     r.tree = '';
     process.stdout.on('data', function (data) {
         jsonArray = JSON.parse(data);
