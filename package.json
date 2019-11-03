@@ -8,6 +8,7 @@
   },
   "author": "GCrawler Dev Team",
   "license": "ISC",
+  "engines" : { "node" : "=8.11.3" }
   "dependencies": {
     "body-parser": "^1.13.3",
     "express": "^4.13.2",
