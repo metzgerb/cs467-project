@@ -10,6 +10,7 @@ Last Modified: 2019-10-26
 """
 
 #import dependencies
+import ssl
 import urllib.request
 import urllib.parse
 from Url import URL
@@ -30,8 +31,11 @@ def get_links(url, keyword = None, parent = None):
     link.parent = parent
     
     try:
+        #set context to ignore ssl
+        context = ssl._create_unverified_context()
+        
         #make get request
-        response = urllib.request.urlopen(link.url)
+        response = urllib.request.urlopen(link.url, context=context)
         
         #set status
         link.status = response.getcode()        
