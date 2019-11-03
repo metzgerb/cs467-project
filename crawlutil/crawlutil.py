@@ -170,7 +170,7 @@ def depth_search(url, link_limit, keyword):
                 stack.insert(0,l)
             
             parent = link.url
-            print(stack)
+            
             #check if keyword found
             if link.key:
                 break
