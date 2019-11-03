@@ -6,11 +6,10 @@ Description: Utility functions for URL crawling program.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-10-26
+Last Modified: 2019-11-03
 """
 
 #import dependencies
-import ssl
 import urllib.request
 import urllib.parse
 from Url import URL
@@ -30,12 +29,9 @@ def get_links(url, keyword = None, parent = None):
     link = URL(url)
     link.parent = parent
     
-    try:
-        #set context to ignore ssl
-        context = ssl._create_unverified_context()
-        
+    try:        
         #make get request
-        response = urllib.request.urlopen(link.url, context=context)
+        response = urllib.request.urlopen(link.url)
         
         #set status
         link.status = response.getcode()        
@@ -148,25 +144,35 @@ Outputs: returns a list of URL objects
 """
 def depth_search(url, link_limit, keyword):
     #set link counter and initial variables
-    links_visited = []
+    links_visited = set()
+    stack = [url]
     parent = "null"
     tree = []
     
     #loop until link_limit reached
-    while len(links_visited) < link_limit and url is not None:
-        #get initial link
-        link = get_links(url, keyword, parent)
+    while len(links_visited) < link_limit and url is not None and stack:
+        #pop from stack
+        vertex = stack.pop()
+                
+        if vertex not in links_visited:
+            #get initial link
+            link = get_links(vertex, keyword, parent)
         
-        #add link to  and add to tree
-        links_visited.append(url)
-        tree.append(link)
+            #add link to list of visited and add to tree
+            links_visited.add(vertex)
+            tree.append(link)
         
-        #get_random link
-        url = link.get_random(links_visited)
-        parent = link.url
-        
-        #check if keyword found
-        if link.key:
-            break
+            #get_random links
+            random_links = link.get_random()
+            
+            #add to stack
+            for l in random_links:
+                stack.insert(0,l)
+            
+            parent = link.url
+            print(stack)
+            #check if keyword found
+            if link.key:
+                break
         
     return tree
