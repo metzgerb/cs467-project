@@ -1,0 +1,30 @@
+<h1>Search History</h1>
+
+<table class="table table-striped" >
+    <thead class="thead-dark">
+        <tr>
+            <th>Date</th>
+            <th>Starting Page</th>
+            <th>Type</th>
+            <th>Results</th>
+            <th>Search Again</th>
+        </tr>
+    </thead>
+  
+
+    {{#each result}}
+    <tr>
+        <td>{{this.date}}</td>
+        <td>{{this.starting_page}}</td>
+        <td>{{this.type}}</td>
+        <td>
+            <button>View</button>
+        </td>
+        <td>
+            <button>Search</button>
+        </td>
+    </tr>
+    {{/each}}
+
+
+</table>

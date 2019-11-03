@@ -6,29 +6,30 @@
  */
 
 // Function to send starting link from website to Unix program
-exports.sendStartingLink = function (req, res) {
+exports.sendStartingLink = function (req, res, r) {
 
     //TODO: work with Brian to directly call the crawler from here
 
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-    var process = spawn('python3', ["./crawl.py", req.body.link, req.body.search_type, req.body.link_limit]);
-
+    var process = spawn('python', ["./crawl.py", req.body.link, req.body.search_type, req.body.max]);
+    r.tree = '';
     process.stdout.on('data', function (data) {
         jsonArray = JSON.parse(data);
 
         var root = makeLinkTree(jsonArray);
-        res.write(JSON.stringify(jsonArray));
-        traverseAndWrite(root, res);
-        res.end();
-    })
+        r = traverseAndWrite(root, r);
+    });
     process.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
-});
+    });
+    process.on('exit', function () {
+        res.render("results", r);
+    });
+    console.log(r.tree);
 
-
-}
+};
 
 class Node {
     constructor(link) {
@@ -109,10 +110,11 @@ function makeLinkTree(jsonArray) {
 }
 
 //This will traverse the tree and print preorder.
-function traverseAndWrite(node, res) {
+function traverseAndWrite(node, r) {
 
     for (i = 0; i < node.childrenArray.length; i++) {
-        traverseAndWrite(node.childrenArray[i], res);
+        r = traverseAndWrite(node.childrenArray[i], r);
     }
-    res.write(node.link);
+    r.tree += "<br />" + node.link;
+    return r;
 }

@@ -1,0 +1,42 @@
+<div class="row w-100 h-100 ">
+    <div class="col bg-left text-white d-md-flex flex-column align-items-center h-100 justify-content-center ">
+        <div class="mt-0 p-0 mb-5">
+            <h2 class="logo"><i class="fas fa-spider"></i></h2>
+        </div>
+        <h1 class="mb-5"> Welcome to Graphic Crawler {{self.name}}!</h1>
+    
+        <div class="mt-5">
+            <h3 class=""><u>About</u></h3>
+                <p> A tool that scraps the web and displays the results graphically.</p>
+            <h3 class="mt-5"><u>Search Types</u></h3>
+            <p>
+                Select <strong>Depth First Search</strong> to randomly visit a link on each page.<br>
+                Select <strong>Breadth First Search</strong> to visit every link on each page.<br>
+            </p>
+        </div>
+    </div>
+   
+    <div class="col bg-right">
+        <div class="d-md-flex flex-column align-items-center h-100 justify-content-center p-5">
+            <form method="POST" action="/search" class="border border-black m-5 p-5" id="search" >
+                <h4 class="mb-5">Enter a website to begin your search!</h4>
+                <div class="form-group p-2">
+                    <label for="link"> Full Starting link:</label>
+                        <input type="url" class="form-control" placeholder="http://www.google.com" id="link" name="link" required>   
+                </div>
+                    <div class="form-group p-2">
+                        <label for="search-type">Choose a search type:</label><br>
+                            <input type="radio" name="search-type" class="form-check-input " value="dfs" required> Depth First Search <br>
+                            <input type="radio"  name="search-type" class="form-check-input  " value="bfs" required> Breadth First Search <br>
+                    </div>
+                
+                    <div class="page-limit form-group p-2"></div>
+
+                    <input type="submit" id="submit" value="Search">
+              
+            </form>
+        </div>
+    </div>
+</div>
+
+

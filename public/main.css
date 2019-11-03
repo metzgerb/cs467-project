@@ -1,0 +1,16 @@
+p {
+    color:rgb(136, 58, 58);
+}
+
+.bkg {
+    /* background-image: linear-gradient(#537895,#485563,  #29323c); */
+
+    background-image: linear-gradient(to bottom right, #D2CCC4,#2F4353);
+    
+
+}
+
+.login-logo{
+    font-size: 60px;
+}
+
