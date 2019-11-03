@@ -15,16 +15,17 @@ exports.sendStartingLink = function (req, res, r) {
 
     var process = spawn('python3', ["./crawl.py", req.body.link, req.body.search_type, req.body.max]);
     r.tree = '';
-    process.stdout.on('data', function (data) {
-        jsonArray = JSON.parse(data);
-
-        var root = makeLinkTree(jsonArray);
-        r = traverseAndWrite(root, r);
+    var data = '';
+    process.stdout.on('data', function (chunk) {
+        data += chunk;
     });
     process.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
     process.on('exit', function () {
+        jsonArray = JSON.parse(data);
+        var root = makeLinkTree(jsonArray);
+        r = traverseAndWrite(root, r);
         res.render("results", r);
     });
     console.log(r.tree);
