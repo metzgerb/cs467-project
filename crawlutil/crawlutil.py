@@ -176,3 +176,66 @@ def depth_search(url, link_limit, keyword):
                 break
         
     return tree
+    
+    
+"""
+Function Name: breadth_search
+Description: Uses a Breadth First Search algorithm to construct a list of links
+    that can be followed from 
+Inputs: takes a string representing a URL to be crawled, an integer for the 
+    maximum depth of links to follow and a string representing a keyword to 
+    be searched for
+Outputs: returns a list of URL objects
+"""
+def breadth_search(url, depth_limit, keyword):
+    #set link counter and initial variables
+    links_visited = set()
+    queue = [url]
+    parent = "null"
+    tree = []
+    depth = 0
+    
+    #begin node increase counter at 1 in order to account for root
+    depth_increase_counter = 1
+    pending_depth_increase = False
+    
+    #loop until link_limit reached
+    while depth <= depth_limit and url is not None and queue:
+        #get vertex from queue and reduce counter
+        vertex = stack.pop()
+        depth_increase_counter -= 1
+        
+        #check if depth has increased
+        if depth_increase_counter == 0:
+            #increase depth 
+            depth += 1
+            pending_depth_increase = True
+        
+        if vertex not in links_visited:
+            #get initial link
+            link = get_links(vertex, keyword, parent)
+            
+            #add link to list of visited and add to tree
+            links_visited.add(vertex)
+            tree.append(link)
+        
+            #get_random links
+            random_links = link.get_random()
+            
+            #add to back of queue
+            for l in random_links:
+                #check if pending depth increase
+                if pending_depth_increase:
+                    #set counter to what's already in the queue and reset flag
+                    depth_increase_counter = len(queue)
+                    pending_depth_increase = False
+                #add to queue
+                queue.append(l)                
+            
+            parent = link.url
+            
+            #check if keyword found
+            if link.key:
+                break
+        
+    return tree
