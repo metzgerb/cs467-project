@@ -167,7 +167,7 @@ def depth_search(url, link_limit, keyword = None):
             
             #add to stack
             for l in random_links:
-                stack.insert(0,l)
+                stack.append(l)
             
             parent = link.url
             
@@ -196,6 +196,7 @@ def breadth_search(url, depth_limit, keyword = None):
     depth = 0
     
     #begin node increase counter at 1 in order to account for root
+    #adapted from source: https://stackoverflow.com/questions/10258305/how-to-implement-a-breadth-first-search-to-a-certain-depth
     depth_increase_counter = 1
     pending_depth_increase = False
     
@@ -218,19 +219,17 @@ def breadth_search(url, depth_limit, keyword = None):
             #add link to list of visited and add to tree
             links_visited.add(vertex)
             tree.append(link)
-        
-            #get_random links
-            random_links = link.get_random()
             
             #add to back of queue
-            for l in random_links:
-                #check if pending depth increase
-                if pending_depth_increase:
-                    #set counter to what's already in the queue and reset flag
-                    depth_increase_counter = len(queue)
-                    pending_depth_increase = False
+            for l in link.links:
                 #add to queue
-                queue.append(l)                
+                queue.insert(0,l)
+            
+            #check if pending depth increase
+            if pending_depth_increase:
+                #set counter to what's already in the queue and reset flag
+                depth_increase_counter = len(queue)
+                pending_depth_increase = False
             
             parent = link.url
             

@@ -34,7 +34,7 @@ if DEBUG:
     print("")
 
 """
-Name: get_links keyword positive test exact match inside p tag
+Name: breadth_search with index.html
 Target: crawlutil.breadth_search()
 Input: "index.html" limit = 1
 Expected Output: Tree containing 6 links
@@ -84,7 +84,7 @@ del test_tree
 
 
 """
-Name: get_links keyword positive test exact match inside p tag
+Name: breadth_search with root.html
 Target: crawlutil.breadth_search()
 Input: "root.html" limit = 1
 Expected Output: Tree containing 3 links
@@ -97,6 +97,9 @@ tree_list = []
 
 for link in test_tree:
     tree_list.append(link.url)
+
+#for i in range(len(test_tree)):
+#    print(test_tree[i].url)
 
 test_list = [
         ROOT_URL + "root.html",
@@ -128,5 +131,116 @@ except AssertionError:
         print("FAILED\n\n")
 
 del test_tree
+
+
+"""
+Name: breadth_search with root.html
+Target: crawlutil.breadth_search()
+Input: "root.html" limit = 2
+Expected Output: Tree containing 3 links
+"""
+if DEBUG:
+    print("Testing BFS with depth of 2: " + ROOT_URL + "root.html")
+
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 2)
+tree_list = []
+
+for link in test_tree:
+    tree_list.append(link.url)
+
+#for i in range(len(test_tree)):
+#    print(test_tree[i].url)
+
+test_list = [
+        ROOT_URL + "root.html",
+        ROOT_URL + "1depth-1.html",
+        ROOT_URL + "1depth-2.html",
+        ROOT_URL + "2depth-1.html",
+        ROOT_URL + "2depth-2.html",
+        ROOT_URL + "2depth-3.html",
+    ]
+    
+
+#check for failures
+if DEBUG:
+    print("Checking output (6 links): ", end = "")
+
+try:
+    #sort lists
+    tree_list.sort()
+    test_list.sort()
+        
+    assert(tree_list == test_list)
+    passed += 1
+    
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("FAILED\n\n")
+
+del test_tree
+
+
+"""
+Name: breadth_search with root.html
+Target: crawlutil.breadth_search()
+Input: "root.html" limit = 3
+Expected Output: Tree containing 3 links
+"""
+if DEBUG:
+    print("Testing BFS with depth of 3: " + ROOT_URL + "root.html")
+
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 3)
+tree_list = []
+
+for link in test_tree:
+    tree_list.append(link.url)
+
+#for i in range(len(test_tree)):
+#    print(test_tree[i].url)
+
+test_list = [
+        ROOT_URL + "root.html",
+        ROOT_URL + "1depth-1.html",
+        ROOT_URL + "1depth-2.html",
+        ROOT_URL + "2depth-1.html",
+        ROOT_URL + "2depth-2.html",
+        ROOT_URL + "2depth-3.html",
+        ROOT_URL + "relative.html",
+        ROOT_URL + "index.html",
+        ROOT_URL + "sub/sub1.html",
+        ROOT_URL + "sub/sub/subsub1.html",
+    ]
+    
+
+#check for failures
+if DEBUG:
+    print("Checking output (10 links): ", end = "")
+
+try:
+    #sort lists
+    tree_list.sort()
+    test_list.sort()
+        
+    assert(tree_list == test_list)
+    passed += 1
+    
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("FAILED\n\n")
+
+del test_tree
+
 
 print("PASSED: %d FAILED: %d" % (passed, failed))
