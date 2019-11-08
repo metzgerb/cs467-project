@@ -6,7 +6,7 @@ Description: Utility functions for URL crawling program.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-11-03
+Last Modified: 2019-11-08
 """
 
 #import dependencies
@@ -142,7 +142,7 @@ Inputs: takes a string representing a URL to be crawled, an integer for the
     be searched for
 Outputs: returns a list of URL objects
 """
-def depth_search(url, link_limit, keyword):
+def depth_search(url, link_limit, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     stack = [url]
@@ -187,7 +187,7 @@ Inputs: takes a string representing a URL to be crawled, an integer for the
     be searched for
 Outputs: returns a list of URL objects
 """
-def breadth_search(url, depth_limit, keyword):
+def breadth_search(url, depth_limit, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     queue = [url]
@@ -202,7 +202,7 @@ def breadth_search(url, depth_limit, keyword):
     #loop until link_limit reached
     while depth <= depth_limit and url is not None and queue:
         #get vertex from queue and reduce counter
-        vertex = stack.pop()
+        vertex = queue.pop()
         depth_increase_counter -= 1
         
         #check if depth has increased
