@@ -103,6 +103,7 @@ def get_links(url, keyword = None, parent = None):
                 j = len(split_link) - 1 
                 while j >= 0:
                     #check for ".."
+                    sys.stderr.write(','.join(split_link))
                     if split_link[j] == "..":
                         #remove from link
                         del split_link[j]
