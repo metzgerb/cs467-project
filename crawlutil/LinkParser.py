@@ -6,7 +6,7 @@ Description: Holds the LinkParser class for crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-26
-Last Modified: 2019-10-26
+Last Modified: 2019-11-11
 """
 
 #dependencies
@@ -27,6 +27,8 @@ class LinkParser(HTMLParser):
         self.no_index = False
         self.keyword = keyword
         self.key_found = False
+        self.title = None
+        self.title_match = False
         
     #parses any starting HTML tag to add href data to links array
     #TODO: ADD META TAG CHECKING
@@ -39,6 +41,9 @@ class LinkParser(HTMLParser):
                 #loop through attributes
                 if attr[0] == 'href':
                     self.links.append(attr[1])
+        #set title flag if title tag found
+        elif tag == "title":
+            self.title_match = True
     
     #parses any self-closing HTML tag to add href data to links array
     #TODO: ADD META TAG CHECKING
@@ -53,6 +58,11 @@ class LinkParser(HTMLParser):
                     self.links.append(attr[1])
     
     def handle_data(self, data):
+        #check if title found
+        if self.title_match:
+            self.title = data
+            self.title_match = False
+        
         #check data for keyword if specified, and if keyword has not already been found
         if not self.key_found and self.keyword and self.keyword.lower() in data.lower():
             self.key_found = True
@@ -63,3 +73,5 @@ class LinkParser(HTMLParser):
         self.links = []
         self.no_index = False
         self.key_found = False
+        self.title = None
+        self.title_match = False

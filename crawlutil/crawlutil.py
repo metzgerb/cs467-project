@@ -63,8 +63,9 @@ def get_links(url, keyword = None, parent = None):
             #assign links to URL object
             link.links = parser.links.copy()
         
-        #check if keyword was found
+        #check if keyword was found and store title
         link.key = parser.key_found
+        link.title = parser.title
         parser.close()
         
         #parse original url

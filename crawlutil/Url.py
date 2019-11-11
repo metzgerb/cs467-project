@@ -6,7 +6,7 @@ Description: Holds the URL class for crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-26
-Last Modified: 2019-11-03
+Last Modified: 2019-11-11
 """
 
 #dependencies
@@ -24,6 +24,7 @@ class URL():
         self.url = url
         self.status = None
         self.parent = None
+        self.title = None
         self.key = False
         self.links = []
     
@@ -37,6 +38,10 @@ class URL():
         response += ',"STATUS": '
         if self.status:
             response += '"' + str(self.status) + '"'
+        #store Title
+        response += ',"Title": '
+        if self.title:
+           response += '"' + self.title + '"'
         #store parent
         response += ',"Parent": '
         if self.parent:
