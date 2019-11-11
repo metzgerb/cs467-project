@@ -1,7 +1,7 @@
 //express for routing
 var express = require('express');
 var app = express();
-var port = process.env.PORT || 8080
+var port = process.env.PORT || 8080;
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
@@ -24,5 +24,5 @@ app.use('/results', require('./results.js'));
 
 //listen on local port 3001
 app.listen(port, function () {
-    console.log('Express started on http://localhost:3001');
+    console.log('Express started on http://localhost:8080');
 });

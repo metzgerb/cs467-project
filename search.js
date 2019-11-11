@@ -19,7 +19,9 @@ module.exports = function () {
         var search_type = req.body.search_type;
         var max = req.body.max;
         //console.log(req.body);
-        //console.log(link, search_type, max);
+        
+        console.log(link, search_type, max);
+
         dataTransfer.sendStartingLink(req, res, r);
         
         

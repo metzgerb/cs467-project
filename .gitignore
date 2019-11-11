@@ -3,3 +3,7 @@
 node_modules/
 package-lock.json
 .vs/slnx.sqlite
+.vs/cs467-project/v16/.suo
+.vs/VSWorkspaceState.json
+.vs/cs467-project/config/applicationhost.config
+.vs/ProjectSettings.json

@@ -25,7 +25,10 @@ exports.sendStartingLink = function (req, res, r) {
     process.on('exit', function () {
         jsonArray = JSON.parse(data);
         var root = makeLinkTree(jsonArray);
-        r = traverseAndWrite(root, r);
+        var dictionary = {};
+        dictionary = assignLevel(root, dictionary, 1);
+        r = assignDictionaryToRender(dictionary, r);
+        console.log(r.treeArray);
         res.render("results", r);
     });
     console.log(r.tree);
@@ -112,10 +115,36 @@ function makeLinkTree(jsonArray) {
 
 //This will traverse the tree and print preorder.
 function traverseAndWrite(node, r) {
-
+    r.tree += "<br />" + node.link;
     for (i = 0; i < node.childrenArray.length; i++) {
         r = traverseAndWrite(node.childrenArray[i], r);
     }
-    r.tree += "<br />" + node.link;
+    
+    return r;
+}
+
+//This function will traverse a tree and act as a dictionary based on objects parents.
+function assignLevel(node, levelDict, level) {
+    if (levelDict.hasOwnProperty(level)) {
+        levelDict.level.push(node);
+    }
+    else {
+        levelDict[level] = [node];
+    }
+
+    for (i = 0; i < node.childrenArray.length; i++) {
+        levelDict = assignLevel(node.childrenArray[i], levelDict, level + 1);
+    }
+    return levelDict;
+}
+
+function assignDictionaryToRender(levelDict, r) {
+    var depth = 1;
+    var arrayOfNodes = [];
+    while (levelDict.hasOwnProperty(depth)){
+        arrayOfNodes.push(levelDict[depth]);
+        depth += 1;
+    }
+    r.treeArray = arrayOfNodes;
     return r;
 }

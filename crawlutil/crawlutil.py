@@ -14,6 +14,7 @@ import urllib.request
 import urllib.parse
 from Url import URL
 from LinkParser import LinkParser
+import sys
 
 """
 Function Name: get_links
@@ -89,6 +90,7 @@ def get_links(url, keyword = None, parent = None):
             #check for "../" beginning
             elif link.links[i][:3] == "../":
                 #split original path
+                
                 split_path = parsed_url.path.split("/")
                 
                 #delete original page from path
@@ -106,7 +108,8 @@ def get_links(url, keyword = None, parent = None):
                         del split_link[j]
                     
                         #remove a directory from the original path
-                        del split_path[-1]
+
+                        #del split_path[-1]
                     
                     #reduce index counter
                     j -= 1

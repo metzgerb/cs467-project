@@ -31,8 +31,8 @@ $(document).ready(function(){
                 'search_type': search_type,
                 'max': max
             },
-            success : function(results) {              
-                window.location.replace("/results");
+            success: function (results) {
+                
             },
             error : function(request,error)
             {
@@ -41,4 +41,9 @@ $(document).ready(function(){
         });
     });
     */
+    $('#submit').click(function () {
+        document.getElementById('search').style.display = "none";
+        document.getElementById('loading').style.display = "block";
+    });
+    
 });
