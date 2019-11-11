@@ -26,6 +26,7 @@ exports.sendStartingLink = function (req, res, r) {
         jsonArray = JSON.parse(data);
         var root = makeLinkTree(jsonArray);
         r = traverseAndWrite(root, r);
+        console.log(r);
         res.render("results", r);
     });
     console.log(r.tree);
@@ -116,6 +117,6 @@ function traverseAndWrite(node, r) {
     for (i = 0; i < node.childrenArray.length; i++) {
         r = traverseAndWrite(node.childrenArray[i], r);
     }
-    r.tree += "<br />" + node.link;
+    r.tree += "<br>" + node.link;
     return r;
 }

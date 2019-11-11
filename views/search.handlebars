@@ -13,7 +13,12 @@
                 Select <strong>Depth First Search</strong> to randomly visit a link on each page.<br>
                 Select <strong>Breadth First Search</strong> to visit every link on each page.<br>
             </p>
+            <h3 class="mt-5"><u>Keyword</u></h3>
+            <p>
+                Magical word to stop crawler when encountered on a page
+            </p>
         </div>
+        
     </div>
    
     <div class="col bg-right">
@@ -24,15 +29,20 @@
                     <label for="link"> Full Starting link:</label>
                         <input type="url" class="form-control" placeholder="http://www.google.com" id="link" name="link" required>   
                 </div>
-                    <div class="form-group p-2">
-                        <label for="search-type">Choose a search type:</label><br>
-                            <input type="radio" name="search-type" class="form-check-input " value="dfs" required> Depth First Search <br>
-                            <input type="radio"  name="search-type" class="form-check-input  " value="bfs" required> Breadth First Search <br>
-                    </div>
+                <div class="form-group p-2">
+                    <label for="keyword">Choose a keyword:</label><br>
+                        <input type="text" name="keyword" class="form-control" placeholder="apple"> 
+                        
+                </div>
+                <div class="form-group p-2">
+                    <label for="search-type">Choose a search type:</label><br>
+                        <input type="radio" name="search-type" class="form-check-input " value="dfs" required> Depth First Search <br>
+                        <input type="radio"  name="search-type" class="form-check-input  " value="bfs" required> Breadth First Search <br>
+                </div>
                 
-                    <div class="page-limit form-group p-2"></div>
+                <div class="page-limit form-group p-2"></div>
 
-                    <input type="submit" id="submit" value="Search">
+                <input type="submit" id="submit" value="Search">
               
             </form>
         </div>
