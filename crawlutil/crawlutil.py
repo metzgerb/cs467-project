@@ -56,8 +56,8 @@ def get_links(url, keyword = None, parent = None):
         parser.reset_parser()
         parser.feed(page)
 
-        #check if no index is set
-        if not parser.no_index:
+        #check if no follow is set
+        if not parser.no_follow:
             #assign links to URL object
             link.links = parser.links.copy()
         
