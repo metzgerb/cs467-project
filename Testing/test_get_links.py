@@ -326,8 +326,8 @@ del test_url
 """
 Name: get_links meta no follow tag
 Target: crawlutil.get_links()
-Input: "index.html"
-Expected Output: URL object with 5 links, no parent, and a status of 200
+Input: "meta-nofollow.html"
+Expected Output: URL object with 0 links, no parent, and a status of 200
 """
 if DEBUG:
     print("Testing no follow meta tag: " + ROOT_URL + "meta-nofollow.html")
@@ -357,6 +357,57 @@ try:
         print(len(test_url.links))
 
     test_list = []
+
+    if DEBUG:
+        print("Checking links match: ", end = "")
+
+    assert(test_url.links == test_list)
+    passed += 1
+    if DEBUG:
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print("FAILED\n\n")
+
+del test_url
+
+
+"""
+Name: get_links single link rel no follow tag
+Target: crawlutil.get_links()
+Input: "link-nofollow.html"
+Expected Output: URL object with 1 link, no parent, and a status of 200
+"""
+if DEBUG:
+    print("Testing no follow link rel tag: " + ROOT_URL + "link-nofollow.html")
+
+test_url = cu.URL()
+test_url = cu.get_links(ROOT_URL + "link-nofollow.html")
+
+#check for failures
+if DEBUG:
+    print("Checking status (200): ", end = "")
+
+try: 
+    assert(test_url.status == 200)
+    
+    if DEBUG:
+        print(str(test_url.status))
+        
+        print("Checking parent (None): ", end = "")  
+
+    assert(test_url.parent is None)
+    if DEBUG:
+        print("None")
+        print("Checking # of links (1): ", end = "")
+
+    assert(len(test_url.links) == 1)
+    if DEBUG:
+        print(len(test_url.links))
+
+    test_list = [ROOT_URL + "relative.html"]
 
     if DEBUG:
         print("Checking links match: ", end = "")
