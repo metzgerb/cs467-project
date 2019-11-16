@@ -42,9 +42,7 @@ def get_links(url, keyword = None, parent = None):
         #log the returned status code
         link.status = e.code
     
-    #TODO: check for no index meta tag in header 
-    #NEED TO LOOK INTO GETTING ROBOTS.TXT IN ADDITION TO PARSING META TAGS AND 
-    #REL ATTRS IN LINKS: https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
+    #TODO: NEED TO LOOK INTO GETTING ROBOTS.TXT: https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
     
     #check for errors from response
     if response:      
