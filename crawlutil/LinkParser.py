@@ -44,7 +44,8 @@ class LinkParser(HTMLParser):
         
         #capture only links
         elif tag == 'a':
-            #check for rel attribute
+            #check for rel attribute 
+            #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
             for attr in attrs:
                 if attr[0] == 'rel' and 'nofollow' in attr[1].lower():
                     #skip adding to list of links
@@ -58,7 +59,8 @@ class LinkParser(HTMLParser):
                     
         #check if meta tag contains "nofollow"
         elif tag == 'meta':
-            #check for robots meta tag
+            #check for robots meta tag 
+            #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
             for attr in attrs:
                 if attr[0] == 'name' and attr[1].lower() == 'robots':
                     #check content
@@ -79,6 +81,7 @@ class LinkParser(HTMLParser):
         #capture only links
         elif tag == 'a':
             #check for rel attribute
+            #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
             for attr in attrs:
                 if attr[0] == 'rel' and 'nofollow' in attr[1].lower():
                     #skip adding to list of links
@@ -91,6 +94,7 @@ class LinkParser(HTMLParser):
                     self.links.append(attr[1])
         
         #check if meta tag contains "nofollow"
+        #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
         elif tag == 'meta':
             #check for robots meta tag
             for attr in attrs:

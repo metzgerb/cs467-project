@@ -6,7 +6,7 @@ Description: Runs tests to check the BFS function in crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-11-08
-Last Modified: 2019-11-09
+Last Modified: 2019-11-16
 """
 
 
@@ -42,7 +42,9 @@ Expected Output: Tree containing 6 links
 if DEBUG:
     print("Testing BFS with depth of 1: " + ROOT_URL + "index.html")
 
-test_tree = cu.breadth_search(ROOT_URL + "index.html", 1)
+robots = cu.get_robots(ROOT_URL + "index.html")
+
+test_tree = cu.breadth_search(ROOT_URL + "index.html", 1, robots)
 tree_list = []
 
 for link in test_tree:
@@ -88,7 +90,9 @@ Expected Output: Tree containing 3 links
 if DEBUG:
     print("Testing BFS with depth of 1: " + ROOT_URL + "root.html")
 
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 1)
+robots = cu.get_robots(ROOT_URL + "root.html")
+
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 1, robots)
 tree_list = []
 
 for link in test_tree:
@@ -130,7 +134,9 @@ Expected Output: Tree containing 6 links
 if DEBUG:
     print("Testing BFS with depth of 2: " + ROOT_URL + "root.html")
 
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 2)
+robots = cu.get_robots(ROOT_URL + "root.html")
+
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 2, robots)
 tree_list = []
 
 for link in test_tree:
@@ -175,7 +181,9 @@ Expected Output: Tree containing 10 links
 if DEBUG:
     print("Testing BFS with depth of 3: " + ROOT_URL + "root.html")
 
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 3)
+robots = cu.get_robots(ROOT_URL + "root.html")
+
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 3, robots)
 tree_list = []
 
 for link in test_tree:
@@ -224,7 +232,9 @@ Expected Output: Tree containing 5 links
 if DEBUG:
     print("Testing BFS with depth of 3: " + ROOT_URL + "root.html")
 
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 3,"aardvark")
+robots = cu.get_robots(ROOT_URL + "root.html")
+
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 3, robots, "aardvark")
 tree_list = []
 
 for link in test_tree:
@@ -257,5 +267,44 @@ except AssertionError:
         print("FAILED\n\n")
 
 del test_tree
+
+
+"""
+Name: breadth_search with google.com using disallow in robots.txt
+Target: crawlutil.breadth_search()
+Input: "google.com/groups " limit = 3
+Expected Output: Tree containing 0 links
+"""
+if DEBUG:
+    print("Testing BFS with depth of 3: " + ROOT_URL + "root.html")
+
+robots = cu.get_robots("https://www.google.com/groups")
+
+test_tree = cu.breadth_search("https://www.google.com/groups", 3, robots)
+tree_list = []
+
+for link in test_tree:
+    tree_list.append(link.url)
+    
+#check for failures
+if DEBUG:
+    print("Checking output (0 links): ", end = "")
+
+try:        
+    assert(len(tree_list) == 0)
+    passed += 1
+    
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("FAILED\n\n")
+
+del test_tree
+
 
 print("PASSED: %d FAILED: %d" % (passed, failed))
