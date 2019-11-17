@@ -16,15 +16,27 @@
     {{#each result}}
     <tr>
         <td>{{this.date}}</td>
-        <td>{{this.link}}</td>
+        <td> <a href='{{this.link}}' target="_blank">{{this.link}}</a> </td>
         <td>{{this.search_type}}</td>
         <td>{{this.keyword}}</td>
         <td>{{this.max}}</td>
         <td>
-            <button>Search</button>
+            <form method="POST" action="/search">
+                <div style="display: none;">
+                    <input type="url" name="link" value='{{this.link}}'>
+                    <input type="text" name="keyword" value='{{this.keyword}}'>
+                    <input type="text" name="search_type" value='{{this.search_type}}'>
+                    <input type="number" name="max" value='{{this.max}}'>
+                    <input type="text" name="search_again" value="true">
+                </div>
+                
+                <input type="submit" id="submit" value="Search">
+            </form>
+       
         </td>
     </tr>
     {{/each}}
 
 
 </table>
+

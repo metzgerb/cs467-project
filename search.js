@@ -9,7 +9,7 @@ module.exports = function () {
         results.jsscripts = ["static_search.js"];
         results.styles = ["search.css"];
 
-        console.log(req.session.name, req.session.id);
+        console.log(req.session.id);
         res.render("search", results);
     });
 
@@ -27,10 +27,22 @@ module.exports = function () {
         var search_type = req.body.search_type;
         var max = req.body.max;
         var keyword = req.body.keyword;
+        
+        if(!link || !search_type || !max)
+        {
+            r.error = "Invalid search...please try again!";
+            r.jsscripts = ["static_search.js"];
+            r.styles = ["search.css"];
+            res.render('search', r);
+            return;
+        }
 
-        var search = req.session.search || [];
-        search.push({"date": today, "link": link, "search_type": search_type, "max": max, "keyword": keyword});
-        req.session.search = search;
+        if(!req.body.search_again){
+            var search = req.session.search || [];
+            search.push({"date": today, "link": link, "search_type": search_type, "max": max, "keyword": keyword});
+            req.session.search = search;
+        }
+        
 
         dataTransfer.sendStartingLink(req, res, r);
         

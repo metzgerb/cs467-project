@@ -23,6 +23,9 @@
    
     <div class="col bg-right">
         <div class="d-md-flex flex-column align-items-center h-100 justify-content-center p-5">
+            {{#if error}}
+            <p>{{this.error}}</p>
+            {{/if}}
             <form method="POST" action="/search" class="border border-black m-5 p-5" id="search" >
                 <h4 class="mb-5">Enter a website to begin your search!</h4>
                 <div class="form-group p-2">
