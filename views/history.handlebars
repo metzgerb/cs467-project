@@ -4,9 +4,10 @@
     <thead class="thead-dark">
         <tr>
             <th>Date</th>
-            <th>Starting Page</th>
+            <th>Link</th>
             <th>Type</th>
-            <th>Results</th>
+            <th>Keyword</th>
+            <th>Max Length</th>
             <th>Search Again</th>
         </tr>
     </thead>
@@ -15,11 +16,10 @@
     {{#each result}}
     <tr>
         <td>{{this.date}}</td>
-        <td>{{this.starting_page}}</td>
-        <td>{{this.type}}</td>
-        <td>
-            <button>View</button>
-        </td>
+        <td>{{this.link}}</td>
+        <td>{{this.search_type}}</td>
+        <td>{{this.keyword}}</td>
+        <td>{{this.max}}</td>
         <td>
             <button>Search</button>
         </td>
