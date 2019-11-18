@@ -26,7 +26,6 @@ def main(url, search_type, link_limit, keyword = None):
     #attempt to collect robots.txt
     robots = cu.get_robots(url)
     
-    #TODO: update function signature with robots parser
     #branch based on DFS or BFS (Use different functions for each, general flow below)
     if search_type == "dfs":
         tree = cu.depth_search(url, link_limit, robots, keyword)
