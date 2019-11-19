@@ -40,8 +40,8 @@ class URL():
             response += '"' + str(self.status) + '"'
         #store Title
         response += ',"Title": '
-        if self.title:
-           response += '"' + self.title + '"'
+
+        response += '""'
         #store parent
         response += ',"Parent": '
         if self.parent:

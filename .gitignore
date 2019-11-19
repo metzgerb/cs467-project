@@ -3,3 +3,9 @@
 node_modules/
 package-lock.json
 .vs/slnx.sqlite
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/encodings.xml
+.idea/cs467-project.iml
