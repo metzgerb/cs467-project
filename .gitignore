@@ -9,3 +9,7 @@ package-lock.json
 .idea/misc.xml
 .idea/encodings.xml
 .idea/cs467-project.iml
+.vs/cs467-project/config/applicationhost.config
+.vs/cs467-project/v16/.suo
+.vs/ProjectSettings.json
+.vs/VSWorkspaceState.json
