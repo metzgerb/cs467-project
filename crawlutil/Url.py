@@ -11,6 +11,7 @@ Last Modified: 2019-11-11
 
 #dependencies
 import random
+import json
 
 """
 Class Name: URL
@@ -30,7 +31,7 @@ class URL():
     
     #output string format designed by Christopher Beall
     def __str__(self):
-        #store URL
+        """#store URL
         response = '{"URL": '
         if self.url:
             response += '"' + self.url + '"'
@@ -56,7 +57,10 @@ class URL():
         response += ',"LINKS": ['
         response += ','.join(['"' + link + '"' for link in self.links])
         response += ']}'
-
+        """
+        #source: https://docs.python.org/3/library/json.html
+        #https://stackoverflow.com/questions/3768895/how-to-make-a-class-json-serializable
+        response = json.dumps(self, default=lambda o:o.__dict__)
         return response
 
     """
