@@ -11,6 +11,7 @@ Last Modified: 2019-11-23
 
 #dependencies
 import random
+import json
 
 """
 Class Name: URL
@@ -31,30 +32,43 @@ class URL():
     #output string format designed by Christopher Beall
     def __str__(self):
         #store URL
-        response = '{"URL": "'
+        response = '{"URL": '
         if self.url:
-            response += self.url
+            response += json.dumps(self.url)
+        else:
+            response += '""'
+            
         #store Status
-        response += '","STATUS": "'
+        response += ',"STATUS": '
         if self.status:
-            response += str(self.status)
+            response += json.dumps(str(self.status))
+        else:
+            response += '""'
+        
         #store Title
-        response += '","Title": "'
+        response += ',"Title": '
         if self.title:
-           response += self.title
+           response += json.dumps(self.title)
+        else:
+            response += '""'
+        
         #store parent
-        response += '","Parent": "'
+        response += ',"Parent": '
         if self.parent:
-            response += self.parent
+            response += json.dumps(self.parent)
+        else:
+            response += '""'
+        
         #store keyword
-        response += '","Keyword Found": '
+        response += ',"Keyword Found": '
         if self.key:
             response += '"True"'
         else:
             response += '"False"'
+        
         #store links
         response += ',"LINKS": ['
-        response += ','.join(['"' + link + '"' for link in self.links])
+        response += ','.join([json.dumps(link) for link in self.links])
         response += ']}'
         
         return response
