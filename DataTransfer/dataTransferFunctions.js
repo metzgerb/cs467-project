@@ -13,7 +13,8 @@ exports.sendStartingLink = function (req, res, r) {
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-    var process = spawn('python3', ["./crawl.py", req.body.link, req.body.search_type, req.body.max]);
+	//var process = spawn('python3', ["./crawl.py", req.body.link, req.body['search-type'], req.body.max]);
+    var process = spawn('python', ["./crawl.py", req.body.link, req.body['search-type'], req.body.max]);
     r.tree = '';
     var data = '';
     process.stdout.on('data', function (chunk) {

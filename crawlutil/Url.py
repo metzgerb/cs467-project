@@ -6,12 +6,11 @@ Description: Holds the URL class for crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-26
-Last Modified: 2019-11-11
+Last Modified: 2019-11-23
 """
 
 #dependencies
 import random
-import json
 
 """
 Class Name: URL
@@ -31,24 +30,24 @@ class URL():
     
     #output string format designed by Christopher Beall
     def __str__(self):
-        """#store URL
-        response = '{"URL": '
+        #store URL
+        response = '{"URL": "'
         if self.url:
-            response += '"' + self.url + '"'
+            response += self.url
         #store Status
-        response += ',"STATUS": '
+        response += '","STATUS": "'
         if self.status:
-            response += '"' + str(self.status) + '"'
+            response += str(self.status)
         #store Title
-        response += ',"Title": '
+        response += '","Title": "'
         if self.title:
-           response += '"' + self.title + '"'
+           response += self.title
         #store parent
-        response += ',"Parent": '
+        response += '","Parent": "'
         if self.parent:
-            response += '"' + self.parent + '"'
+            response += self.parent
         #store keyword
-        response += ',"Keyword Found": '
+        response += '","Keyword Found": '
         if self.key:
             response += '"True"'
         else:
@@ -57,10 +56,7 @@ class URL():
         response += ',"LINKS": ['
         response += ','.join(['"' + link + '"' for link in self.links])
         response += ']}'
-        """
-        #source: https://docs.python.org/3/library/json.html
-        #https://stackoverflow.com/questions/3768895/how-to-make-a-class-json-serializable
-        response = json.dumps(self, default=lambda o:o.__dict__)
+        
         return response
 
     """
