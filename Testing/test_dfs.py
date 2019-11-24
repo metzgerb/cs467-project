@@ -6,7 +6,7 @@ Description: Runs tests to check the DFS function in crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-11-09
-Last Modified: 2019-11-09
+Last Modified: 2019-11-16
 """
 
 
@@ -43,8 +43,10 @@ Expected Output: Tree containing 3 links
 for x in range(10):
     if DEBUG:
         print("Testing DFS with depth of 3: " + ROOT_URL + "root.html")
-
-    test_tree = cu.depth_search(ROOT_URL + "root.html", 3)
+    
+    robots = cu.get_robots(ROOT_URL + "root.html")
+    
+    test_tree = cu.depth_search(ROOT_URL + "root.html", 3, robots)
     tree_list = []
 
     for link in test_tree:
@@ -99,7 +101,9 @@ for x in range(10):
     if DEBUG:
         print("Testing DFS with depth of 3: " + ROOT_URL + "root.html")
 
-    test_tree = cu.depth_search(ROOT_URL + "root.html", 3,"monkey")
+    robots = cu.get_robots(ROOT_URL + "root.html")
+    
+    test_tree = cu.depth_search(ROOT_URL + "root.html", 3, robots, "monkey")
     tree_list = []
 
     for link in test_tree:
@@ -135,5 +139,81 @@ for x in range(10):
             print("FAILED\n\n")
 
     del test_tree
+    
 
+"""
+Name: depth_search with google.com using disallow in robots.txt
+Target: crawlutil.depth_search()
+Input: "root.html" limit = 3
+Expected Output: Tree containing 0 links
+"""
+if DEBUG:
+    print("Testing DFS with depth of 3: https://www.google.com/search")
+
+robots = cu.get_robots("https://www.google.com/search")
+    
+test_tree = cu.depth_search("https://www.google.com/search", 3, robots)
+tree_list = []
+
+for link in test_tree:
+    tree_list.append(link.url)
+
+#check for failures
+if DEBUG:
+    print("Checking output (0 links): ", end = "")
+
+try:        
+    assert(len(tree_list) == 0)
+    passed += 1
+    
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("FAILED\n\n")
+
+del test_tree
+    
+    
+"""
+Name: depth_search with google.com using allow in robots.txt
+Target: crawlutil.depth_search()
+Input: "root.html" limit = 3
+Expected Output: Tree containing more than 0 links
+"""
+if DEBUG:
+    print("Testing DFS with depth of 3: https://www.google.com/finance")
+
+robots = cu.get_robots("https://www.google.com/finance")
+    
+test_tree = cu.depth_search("https://www.google.com/finance", 3, robots)
+tree_list = []
+
+for link in test_tree:
+    tree_list.append(link.url)
+
+#check for failures
+if DEBUG:
+    print("Checking output (> 0 links): ", end = "")
+
+try:        
+    assert(len(tree_list) > 0)
+    passed += 1
+    
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("PASSED\n\n")
+
+except AssertionError:
+    failed += 1
+    if DEBUG:
+        print(str(len(tree_list)))
+        print("FAILED\n\n")
+
+del test_tree    
+    
 print("PASSED: %d FAILED: %d" % (passed, failed))

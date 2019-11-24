@@ -6,14 +6,41 @@ Description: Utility functions for URL crawling program.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-11-09
+Last Modified: 2019-11-16
 """
 
 #import dependencies
 import urllib.request
 import urllib.parse
+#import urllib.robotparser
 from Url import URL
 from LinkParser import LinkParser
+import BotParser
+
+"""
+Function Name: get_robots
+Description: Attempts to get and parse a robots.txt file for the domain 
+Inputs: takes a string representing a URL to be crawled 
+Outputs: returns RobotFileParser object or None if no robots.txt exists
+"""
+def get_robots(url):
+    #parse url to get domain
+    parsed_url = urllib.parse.urlparse(url, scheme="http")
+    
+    #construct robots.txt url
+    robots_url = parsed_url.scheme + "://" + parsed_url.netloc + "/robots.txt"
+
+    #create robot parser
+    #source: https://docs.python.org/3/library/urllib.robotparser.html
+    #rp = urllib.robotparser.RobotFileParser()
+    rp = BotParser.RobotFileParser()
+    rp.set_url(robots_url)
+    
+    #parse robots.txt file
+    rp.read()
+        
+    #return parser object
+    return rp
 
 """
 Function Name: get_links
@@ -42,10 +69,6 @@ def get_links(url, keyword = None, parent = None):
         #log the returned status code
         link.status = e.code
     
-    #TODO: check for no index meta tag in header 
-    #NEED TO LOOK INTO GETTING ROBOTS.TXT IN ADDITION TO PARSING META TAGS AND 
-    #REL ATTRS IN LINKS: https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
-    
     #check for errors from response
     if response:      
         #read response data
@@ -58,8 +81,8 @@ def get_links(url, keyword = None, parent = None):
         parser.reset_parser()
         parser.feed(page)
 
-        #check if no index is set
-        if not parser.no_index:
+        #check if no follow is set
+        if not parser.no_follow:
             #assign links to URL object
             link.links = parser.links.copy()
         
@@ -139,11 +162,11 @@ Function Name: depth_search
 Description: Uses a Depth First Search algorithm to construct a list of links
     that can be followed from 
 Inputs: takes a string representing a URL to be crawled, an integer for the 
-    maximum number of links to follow and a string representing a keyword to 
-    be searched for
+    maximum number of links to follow, a robots.txt parser and a string 
+    representing a keyword to be searched for
 Outputs: returns a list of URL objects
 """
-def depth_search(url, link_limit, keyword = None):
+def depth_search(url, link_limit, robots, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     stack = [url]
@@ -154,8 +177,9 @@ def depth_search(url, link_limit, keyword = None):
     while len(links_visited) < link_limit and url is not None and stack:
         #pop from stack
         vertex = stack.pop()
-                
-        if vertex not in links_visited:
+        
+        #check if already visited or in robots.txt
+        if vertex not in links_visited and robots.can_fetch("*", vertex):
             #get initial link
             link = get_links(vertex, keyword, parent)
         
@@ -184,11 +208,11 @@ Function Name: breadth_search
 Description: Uses a Breadth First Search algorithm to construct a list of links
     that can be followed from 
 Inputs: takes a string representing a URL to be crawled, an integer for the 
-    maximum depth of links to follow and a string representing a keyword to 
-    be searched for
+    maximum depth of links to follow, a robots.txt parser and a string 
+    representing a keyword to be searched for
 Outputs: returns a list of URL objects
 """
-def breadth_search(url, depth_limit, keyword = None):
+def breadth_search(url, depth_limit, robots, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     queue = [url]
@@ -213,7 +237,8 @@ def breadth_search(url, depth_limit, keyword = None):
             depth += 1
             pending_depth_increase = True
         
-        if vertex not in links_visited:
+        #check if already visited or in robots.txt
+        if vertex not in links_visited and robots.can_fetch("*", vertex):
             #get initial link
             link = get_links(vertex, keyword, parent)
             
