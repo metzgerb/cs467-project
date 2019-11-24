@@ -104,6 +104,7 @@ function makeLinkTree(jsonArray) {
         }
 
     });
+    console.log(dict)
     return root;
 }
 
