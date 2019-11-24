@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-"""Program Name: test_get_links.py
+"""Program Name: test_URLstr.py
 Python Version: 3
-Description: Runs tests for the get_links function in crawlutil.py
+Description: Runs test to display the output of the URL class __str__ function
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-19
-Last Modified: 2019-11-16
+Last Modified: 2019-11-24
 """
 
 
