@@ -29,7 +29,7 @@ class URL():
         self.key = False
         self.links = []
     
-    #output string format designed by Christopher Beall
+    #output string format designed by Christopher Beall and Brian Metzger
     def __str__(self):
         #store URL
         response = '{"URL": '
