@@ -13,7 +13,8 @@ exports.sendStartingLink = function (req, res, r) {
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-	var process = spawn('python3', ["./crawl.py", req.body.link, req.body['search-type'], req.body.max]);
+    var process = spawn('python3', ["./crawl.py", req.body.link, req.body["search-type"], req.body.max]);
+
     r.tree = '';
     var data = '';
     process.stdout.on('data', function (chunk) {
@@ -22,22 +23,32 @@ exports.sendStartingLink = function (req, res, r) {
     process.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    process.on('exit', function () {
-        jsonArray = JSON.parse(data);
+    process.on('exit', function() {
+        try {
+            console.log(data);
+            jsonArray = JSON.parse(data);
+        } catch (e) {
+            console.error(e);
+            r.error = e;
+        }
         var root = makeLinkTree(jsonArray);
-        r = traverseAndWrite(root, r);
-        console.log(r);
+        if (root === undefined) {
+            r.error = "No JSON data received.";
+        }
+        else {
+            console.log(root);
+            r.tree = "<script>" + "var treeData =" + JSON.stringify(root) + ";" + "var moreInfo = Object.keys(treeData)[0]; passTree(treeData); </script >";
+        }
+        
         res.render("results", r);
     });
-    console.log(r.tree);
 
 };
 
 class Node {
     constructor(link) {
-        this.link = link;
-        this.childrenArray = [];
-        this.parent = null;
+        this.name = link;
+        this.children = [];
     }
 }
 
@@ -73,8 +84,8 @@ function makeTreeRecursively(node, jsonObj) {
 }
 
 function makeLinkTree(jsonArray) {
-    var dict = {};
-    var root;
+    let dict = {};
+    let root;
 
     /*
     for (i = 0; i < jsonArray.length; i++) {
@@ -83,7 +94,7 @@ function makeLinkTree(jsonArray) {
     }
     */
     jsonArray.forEach(function (urlObject) {
-        var newNode;
+        let newNode;
         if (urlObject.URL in dict) {
             newNode = dict[urlObject.URL];
         }
@@ -95,7 +106,7 @@ function makeLinkTree(jsonArray) {
             root = newNode;
         }
         else {
-            var parentNode;
+            let parentNode;
             if (!(urlObject.Parent in dict)) {
                 parentNode = new Node();
                 dict[urlObject.Parent] = parentNode;
@@ -103,11 +114,11 @@ function makeLinkTree(jsonArray) {
             else {
                 parentNode = dict[urlObject.Parent];
             }
-            parentNode.childrenArray.push(newNode);
-            newNode.parent = parentNode;
+            parentNode.children.push(newNode);
         }
 
     });
+    console.log(dict)
     return root;
 }
 

@@ -47,11 +47,12 @@ class URL():
         
         #store Title
         response += ',"Title": '
+
         if self.title:
            response += json.dumps(self.title)
         else:
             response += '""'
-        
+
         #store parent
         response += ',"Parent": '
         if self.parent:
