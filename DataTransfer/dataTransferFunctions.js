@@ -21,11 +21,23 @@ exports.sendStartingLink = function (req, res, r) {
     process.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    process.on('exit', function () {
-        jsonArray = JSON.parse(data);
+    process.on('exit', function() {
+        try {
+            console.log(data);
+            jsonArray = JSON.parse(data);
+        } catch (e) {
+            console.error(e);
+            r.error = e;
+        }
         var root = makeLinkTree(jsonArray);
-        console.log(root);
-        r.tree = JSON.stringify(root);
+        if (root === undefined) {
+            r.error = "No JSON data received.";
+        }
+        else {
+            console.log(root);
+            r.tree = "<script>" + "var treeData =" + JSON.stringify(root) + ";" + "var moreInfo = Object.keys(treeData)[0]; passTree(treeData); </script >";
+        }
+        
         res.render("results", r);
     });
 
