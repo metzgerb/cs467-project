@@ -6,7 +6,7 @@ Description: Utility functions for URL crawling program.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-11-16
+Last Modified: 2019-11-24
 """
 
 #import dependencies
@@ -104,11 +104,11 @@ Function Name: depth_search
 Description: Uses a Depth First Search algorithm to construct a list of links
     that can be followed from 
 Inputs: takes a string representing a URL to be crawled, an integer for the 
-    maximum number of links to follow, a robots.txt parser and a string 
-    representing a keyword to be searched for
+    maximum number of links to follow, and a string representing a keyword to 
+    be searched for
 Outputs: returns a list of URL objects
 """
-def depth_search(url, link_limit, robots, keyword = None):
+def depth_search(url, link_limit, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     stack = [url]
@@ -119,6 +119,9 @@ def depth_search(url, link_limit, robots, keyword = None):
     while len(links_visited) < link_limit and url is not None and stack:
         #pop from stack
         vertex = stack.pop()
+        
+        #get robot parser
+        robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
         if vertex not in links_visited and robots.can_fetch("*", vertex):
@@ -150,11 +153,11 @@ Function Name: breadth_search
 Description: Uses a Breadth First Search algorithm to construct a list of links
     that can be followed from 
 Inputs: takes a string representing a URL to be crawled, an integer for the 
-    maximum depth of links to follow, a robots.txt parser and a string 
-    representing a keyword to be searched for
+    maximum depth of links to follow, and a string representing a keyword to 
+    be searched for
 Outputs: returns a list of URL objects
 """
-def breadth_search(url, depth_limit, robots, keyword = None):
+def breadth_search(url, depth_limit, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     queue = [url]
@@ -178,6 +181,9 @@ def breadth_search(url, depth_limit, robots, keyword = None):
             #increase depth 
             depth += 1
             pending_depth_increase = True
+        
+        #get robot parser
+        robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
         if vertex not in links_visited and robots.can_fetch("*", vertex):
