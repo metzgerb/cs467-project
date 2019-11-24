@@ -91,71 +91,10 @@ def get_links(url, keyword = None, parent = None):
         link.title = parser.title
         parser.close()
         
-        #parse original url
-        parsed_url = urllib.parse.urlparse(link.url, scheme="http")
-        
         #iterate through hrefs and convert relative URLs
         for i in range(len(link.links)):
-            link.links[i] = urllib.parse.urljoin(link.url, link.links[i])
-            """#check for empty string
-            if len(link.links[i]) == 0:
-                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + link.links[i]
-            
-            #check for "/" or "?" at beginning
-            elif link.links[i][0] == "/" or link.links[i][0] == "?":
-                #add scheme and networkloc to url
-                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + link.links[i]
-            
-            #check for "./" beginning
-            elif link.links[i][:2] == "./":
-                #add scheme, networkloc, and all but last part of path to url
-                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:parsed_url.path.rfind('/')] + link.links[i][1:]
-                
-            #check for "../" beginning
-            elif link.links[i][:3] == "../":
-                #split original path
-                split_path = parsed_url.path.split("/")
-                
-                #delete original page from path
-                del split_path[-1]
-                
-                #split link
-                split_link = link.links[i].split("/")
-                
-                #iterate through links in reverse order
-                j = len(split_link) - 1 
-                while j >= 0:
-                    #check for ".."
-                    if split_link[j] == "..":
-                        #remove from link
-                        del split_link[j]
-                    
-                        #remove a directory from the original path
-                        del split_path[-1]
-                    
-                    #reduce index counter
-                    j -= 1
-                
-                #combine resulting original path and remaining link path with scheme and netloc
-                link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + "/".join(split_path) + "/" + "/".join(split_link)
-            
-            #account for relative links with no ./, ../, or / notation
-            else:
-                #parse link
-                child_url = urllib.parse.urlparse(link.links[i], scheme="http")
-                
-                #check for empty networkloc
-                if child_url.netloc == '':
-                    #replace empty string with net location from original url
-                    new_child = child_url._replace(netloc = parsed_url.netloc)
-                    
-                    #set original to new child
-                    child_url = new_child
-                
-                #join child_url again
-                link.links[i] = urllib.parse.urlunparse(child_url)"""
-                
-                
+            #takes base url and combines with link if link does not have base of its own
+            link.links[i] = urllib.parse.urljoin(link.url, link.links[i])              
     
     return link
 
