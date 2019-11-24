@@ -6,7 +6,7 @@ Description: Runs tests to check the DFS function in crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-11-09
-Last Modified: 2019-11-16
+Last Modified: 2019-11-24
 """
 
 
@@ -44,9 +44,7 @@ for x in range(10):
     if DEBUG:
         print("Testing DFS with depth of 3: " + ROOT_URL + "root.html")
     
-    robots = cu.get_robots(ROOT_URL + "root.html")
-    
-    test_tree = cu.depth_search(ROOT_URL + "root.html", 3, robots)
+    test_tree = cu.depth_search(ROOT_URL + "root.html", 3)
     tree_list = []
 
     for link in test_tree:
@@ -100,10 +98,8 @@ Expected Output: Tree containing 2 or 3 links
 for x in range(10):
     if DEBUG:
         print("Testing DFS with depth of 3: " + ROOT_URL + "root.html")
-
-    robots = cu.get_robots(ROOT_URL + "root.html")
     
-    test_tree = cu.depth_search(ROOT_URL + "root.html", 3, robots, "monkey")
+    test_tree = cu.depth_search(ROOT_URL + "root.html", 3, "monkey")
     tree_list = []
 
     for link in test_tree:
@@ -149,10 +145,8 @@ Expected Output: Tree containing 0 links
 """
 if DEBUG:
     print("Testing DFS with depth of 3: https://www.google.com/search")
-
-robots = cu.get_robots("https://www.google.com/search")
     
-test_tree = cu.depth_search("https://www.google.com/search", 3, robots)
+test_tree = cu.depth_search("https://www.google.com/search", 3)
 tree_list = []
 
 for link in test_tree:
@@ -188,9 +182,7 @@ Expected Output: Tree containing more than 0 links
 if DEBUG:
     print("Testing DFS with depth of 3: https://www.google.com/finance")
 
-robots = cu.get_robots("https://www.google.com/finance")
-    
-test_tree = cu.depth_search("https://www.google.com/finance", 3, robots)
+test_tree = cu.depth_search("https://www.google.com/finance", 3)
 tree_list = []
 
 for link in test_tree:

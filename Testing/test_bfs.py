@@ -6,7 +6,7 @@ Description: Runs tests to check the BFS function in crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-11-08
-Last Modified: 2019-11-16
+Last Modified: 2019-11-24
 """
 
 
@@ -42,9 +42,7 @@ Expected Output: Tree containing 6 links
 if DEBUG:
     print("Testing BFS with depth of 1: " + ROOT_URL + "index.html")
 
-robots = cu.get_robots(ROOT_URL + "index.html")
-
-test_tree = cu.breadth_search(ROOT_URL + "index.html", 1, robots)
+test_tree = cu.breadth_search(ROOT_URL + "index.html", 1)
 tree_list = []
 
 for link in test_tree:
@@ -90,9 +88,7 @@ Expected Output: Tree containing 3 links
 if DEBUG:
     print("Testing BFS with depth of 1: " + ROOT_URL + "root.html")
 
-robots = cu.get_robots(ROOT_URL + "root.html")
-
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 1, robots)
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 1)
 tree_list = []
 
 for link in test_tree:
@@ -134,9 +130,7 @@ Expected Output: Tree containing 6 links
 if DEBUG:
     print("Testing BFS with depth of 2: " + ROOT_URL + "root.html")
 
-robots = cu.get_robots(ROOT_URL + "root.html")
-
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 2, robots)
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 2)
 tree_list = []
 
 for link in test_tree:
@@ -181,9 +175,7 @@ Expected Output: Tree containing 10 links
 if DEBUG:
     print("Testing BFS with depth of 3: " + ROOT_URL + "root.html")
 
-robots = cu.get_robots(ROOT_URL + "root.html")
-
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 3, robots)
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 3)
 tree_list = []
 
 for link in test_tree:
@@ -232,9 +224,7 @@ Expected Output: Tree containing 5 links
 if DEBUG:
     print("Testing BFS with depth of 3: " + ROOT_URL + "root.html")
 
-robots = cu.get_robots(ROOT_URL + "root.html")
-
-test_tree = cu.breadth_search(ROOT_URL + "root.html", 3, robots, "aardvark")
+test_tree = cu.breadth_search(ROOT_URL + "root.html", 3, "aardvark")
 tree_list = []
 
 for link in test_tree:
@@ -278,9 +268,7 @@ Expected Output: Tree containing 0 links
 if DEBUG:
     print("Testing BFS with depth of 3: " + ROOT_URL + "root.html")
 
-robots = cu.get_robots("https://www.google.com/groups")
-
-test_tree = cu.breadth_search("https://www.google.com/groups", 3, robots)
+test_tree = cu.breadth_search("https://www.google.com/groups", 3)
 tree_list = []
 
 for link in test_tree:
