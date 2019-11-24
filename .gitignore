@@ -13,3 +13,5 @@ package-lock.json
 .vs/cs467-project/v16/.suo
 .vs/ProjectSettings.json
 .vs/VSWorkspaceState.json
+.DS_Store
+validateTree.py

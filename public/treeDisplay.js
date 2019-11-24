@@ -48,12 +48,12 @@ function passTree(treeData){
     var viewerHeight = $(document).height();
 
     var tree = d3.layout.tree()
-        .size([viewerHeight, viewerWidth]);
+        .nodeSize([maxLabelLength*5, 50]);
 
     // define a d3 diagonal projection for use by the node paths later on.
     var diagonal = d3.svg.diagonal()
         .projection(function(d) {
-            return [d.y, d.x];
+            return [d.x, d.y];
         });
 
     // A recursive helper function for performing some setup by walking through all nodes
@@ -225,7 +225,7 @@ function passTree(treeData){
             d.x0 += d3.event.dy;
             d.y0 += d3.event.dx;
             var node = d3.select(this);
-            node.attr("transform", "translate(" + d.y0 + "," + d.x0 + ")");
+            node.attr("transform", "translate(" + d.x0 + "," + d.y0 + ")");
             updateTempConnector();
         }).on("dragend", function(d) {
             if (d == root) {
@@ -381,8 +381,8 @@ function passTree(treeData){
         };
         childCount(0, root);
         var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
-        tree = tree.size([newHeight, viewerWidth]);
-
+        //tree = tree.size([newHeight, viewerWidth]);
+        tree = tree.nodeSize([maxLabelLength*10, 50]);
         // Compute the new tree layout.
         var nodes = tree.nodes(root).reverse(),
             links = tree.links(nodes);
@@ -392,7 +392,7 @@ function passTree(treeData){
             d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
-            // d.y = (d.depth * 500); //500px per level.
+            //d.y = (d.depth * 500); //500px per level.
         });
 
         // Update the nodes…
@@ -403,10 +403,9 @@ function passTree(treeData){
 
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node.enter().append("g")
-            .call(dragListener)
             .attr("class", "node")
             .attr("transform", function(d) {
-                return "translate(" + source.y0 + "," + source.x0 + ")";
+                return "translate(" + source.x0 + "," + source.y0 + ")";
             })
             .on('click', click);
 
@@ -468,7 +467,7 @@ function passTree(treeData){
         var nodeUpdate = node.transition()
             .duration(duration)
             .attr("transform", function(d) {
-                return "translate(" + d.y + "," + d.x + ")";
+                return "translate(" + d.x + "," + d.y + ")";
             });
 
         // Fade the text in
@@ -479,7 +478,7 @@ function passTree(treeData){
         var nodeExit = node.exit().transition()
             .duration(duration)
             .attr("transform", function(d) {
-                return "translate(" + source.y + "," + source.x + ")";
+                return "translate(" + source.x + "," + source.y + ")";
             })
             .remove();
 
