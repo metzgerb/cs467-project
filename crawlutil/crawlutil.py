@@ -96,7 +96,8 @@ def get_links(url, keyword = None, parent = None):
         
         #iterate through hrefs and convert relative URLs
         for i in range(len(link.links)):
-            #check for empty string
+            link.links[i] = urllib.parse.urljoin(link.url, link.links[i])
+            """#check for empty string
             if len(link.links[i]) == 0:
                 link.links[i] = parsed_url.scheme + "://" + parsed_url.netloc + link.links[i]
             
@@ -152,7 +153,9 @@ def get_links(url, keyword = None, parent = None):
                     child_url = new_child
                 
                 #join child_url again
-                link.links[i] = urllib.parse.urlunparse(child_url)
+                link.links[i] = urllib.parse.urlunparse(child_url)"""
+                
+                
     
     return link
 
