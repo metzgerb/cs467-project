@@ -6,7 +6,7 @@ Description: Runs tests to check the DFS function in crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-11-09
-Last Modified: 2019-11-16
+Last Modified: 2019-11-24
 """
 
 
