@@ -6,7 +6,7 @@ Description: Holds the LinkParser class for crawlutil.py
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-26
-Last Modified: 2019-11-11
+Last Modified: 2019-11-16
 """
 
 #dependencies
@@ -20,43 +20,93 @@ Member functions: handle_starttag (collects all start tags)
     handle_data (collects data and searches for keywords)
 """
 class LinkParser(HTMLParser):
-    
     def __init__(self, keyword = None):
         super().__init__()
         self.links = list()
-        self.no_index = False
+        self.no_follow = False
         self.keyword = keyword
         self.key_found = False
         self.title = None
         self.title_match = False
         
+        
     #parses any starting HTML tag to add href data to links array
-    #TODO: ADD META TAG CHECKING
-    #ADD ATTR SEARCH FOR REL: NOFOLLOW
+    #also adds title information and checks for nofollow tags
     def handle_starttag(self, tag, attrs):
+        #set title flag if title tag found
+        if tag == "title":
+            self.title_match = True
+        
+        #check no_follow
+        if self.no_follow:
+            #skip all links on page
+            return
+        
         #capture only links
-        if tag == 'a':
-            #loop through attributes
+        elif tag == 'a':
+            #check for rel attribute 
+            #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
+            for attr in attrs:
+                if attr[0] == 'rel' and 'nofollow' in attr[1].lower():
+                    #skip adding to list of links
+                    return
+            
+            #find href attribute
             for attr in attrs:
                 #loop through attributes
                 if attr[0] == 'href':
                     self.links.append(attr[1])
-        #set title flag if title tag found
-        elif tag == "title":
-            self.title_match = True
+                    
+        #check if meta tag contains "nofollow"
+        elif tag == 'meta':
+            #check for robots meta tag 
+            #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
+            for attr in attrs:
+                if attr[0] == 'name' and attr[1].lower() == 'robots':
+                    #check content
+                    for attr in attrs:
+                        #check if attr is content and contains "nofollow"
+                        if attr[0] == 'content' and 'nofollow' in attr[1].lower():
+                            self.no_follow = True
+    
     
     #parses any self-closing HTML tag to add href data to links array
-    #TODO: ADD META TAG CHECKING
-    #ADD ATTR SEARCH FOR REL: NOFOLLOW
+    #also checks for nofollow tags
     def handle_startendtag(self, tag, attrs):
+        #check if no_follow is set
+        if self.no_follow:
+            #skip all links on page
+            return
+        
         #capture only links
-        if tag == 'a':
-            #loop through attributes
+        elif tag == 'a':
+            #check for rel attribute
+            #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
+            for attr in attrs:
+                if attr[0] == 'rel' and 'nofollow' in attr[1].lower():
+                    #skip adding to list of links
+                    return
+            
+            #find href attribute
             for attr in attrs:
                 #collect only hrefs
                 if attr[0] == 'href':
                     self.links.append(attr[1])
+        
+        #check if meta tag contains "nofollow"
+        #source:https://www.deepcrawl.com/blog/best-practice/noindex-disallow-nofollow/
+        elif tag == 'meta':
+            #check for robots meta tag
+            for attr in attrs:
+                if attr[0] == 'name' and attr[1].lower() == 'robots':
+                    #check content
+                    for attr in attrs:
+                        #check if attr is content and contains "nofollow"
+                        if attr[0] == 'content' and 'nofollow' in attr[1].lower():
+                            self.no_follow = True
     
+    
+    #parses data and store title while searching for keyword
     def handle_data(self, data):
         #check if title found
         if self.title_match:
@@ -71,7 +121,7 @@ class LinkParser(HTMLParser):
     #used to reset the instance of the class
     def reset_parser(self):
         self.links = []
-        self.no_index = False
+        self.no_follow = False
         self.key_found = False
         self.title = None
         self.title_match = False
