@@ -33,11 +33,18 @@ exports.sendStartingLink = function (req, res, r) {
         }
         var root = makeLinkTree(jsonArray);
         if (root === undefined) {
-            r.error = "No JSON data received.";
+            r.header = "<h2>No JSON data received. This could be due to a robots.txt file disallowing crawlers on that website. (For example, http://www.google.com will block crawlers.)</h2>";
         }
         else {
-            console.log(root);
-            r.tree = "<script>" + "var treeData =" + JSON.stringify(root) + ";" + "var moreInfo = Object.keys(treeData)[0]; passTree(treeData); </script >";
+            let searchType;
+            if (req.body["search-type"] === "dfs") {
+                searchType = "Depth First Search";
+            }
+            else {
+                searchType = "Breadth First Search";
+            }
+            r.header = "<h1> Results for your " + searchType + "</h1><h1> Your tree: </h1>";
+            r.tree = "<script>" + "var treeData =" + JSON.stringify(root) + ";\nvar moreInfo = Object.keys(treeData)[0];\n passTree(treeData);\n </script >";
         }
         
         res.render("results", r);
@@ -49,8 +56,56 @@ class Node {
     constructor(link) {
         this.name = link;
         this.children = [];
+        this.parent = "";
     }
 }
+
+
+
+function makeLinkTree(jsonArray) {
+    let dict = {};
+    let root;
+
+    /*
+    for (i = 0; i < jsonArray.length; i++) {
+        // Make a map with URL as key and URL object as item
+        dict[jsonArray[i].URL] = jsonArray[i];
+    }
+    */
+    jsonArray.forEach(function (urlObject) {
+        let newNode;
+        if (urlObject.URL in dict) {
+            newNode = dict[urlObject.URL];
+        }
+        else {
+            newNode = new Node(urlObject.URL);
+            newNode.title = urlObject.Title;
+            dict[urlObject.URL] = newNode;
+        }
+        if (urlObject.Parent === 'null') {
+            root = newNode;
+        }
+        else {
+            let parentNode;
+            if (!(urlObject.Parent in dict)) {
+                parentNode = new Node(urlObject.Parent);
+                dict[urlObject.Parent] = parentNode; 
+            }
+            else {
+                parentNode = dict[urlObject.Parent];  
+            }
+            
+            parentNode.children.push(newNode);
+            
+        }
+
+    });
+    
+    return root;
+}
+
+//the following functions are not currently being used within the crawler, but are saved here in case they will be needed again
+
 
 class Tree {
     constructor(link) {
@@ -81,45 +136,6 @@ function makeTreeRecursively(node, jsonObj) {
         node.childrenArray.push(child);
         makeTreeRecursively(child, jsonObj.children[i]);
     }
-}
-
-function makeLinkTree(jsonArray) {
-    let dict = {};
-    let root;
-
-    /*
-    for (i = 0; i < jsonArray.length; i++) {
-        // Make a map with URL as key and URL object as item
-        dict[jsonArray[i].URL] = jsonArray[i];
-    }
-    */
-    jsonArray.forEach(function (urlObject) {
-        let newNode;
-        if (urlObject.URL in dict) {
-            newNode = dict[urlObject.URL];
-        }
-        else {
-            newNode = new Node(urlObject.URL);
-            dict[urlObject.URL] = newNode;
-        }
-        if (urlObject.Parent === 'null') {
-            root = newNode;
-        }
-        else {
-            let parentNode;
-            if (!(urlObject.Parent in dict)) {
-                parentNode = new Node();
-                dict[urlObject.Parent] = parentNode;
-            }
-            else {
-                parentNode = dict[urlObject.Parent];
-            }
-            parentNode.children.push(newNode);
-        }
-
-    });
-    console.log(dict)
-    return root;
 }
 
 //This will traverse the tree and print preorder.
