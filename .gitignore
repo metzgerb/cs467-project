@@ -3,3 +3,16 @@
 node_modules/
 package-lock.json
 .vs/slnx.sqlite
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/encodings.xml
+.idea/cs467-project.iml
+.vs/cs467-project/config/applicationhost.config
+.vs/cs467-project/v16/.suo
+.vs/ProjectSettings.json
+.vs/VSWorkspaceState.json
+.DS_Store
+validateTree.py
+.vs/PythonSettings.json
