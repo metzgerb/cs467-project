@@ -205,7 +205,7 @@ def breadth_search(url, depth_limit, keyword = None):
                 depth_increase_counter = len(queue)
                 pending_depth_increase = False
             
-            parent = link.url
+                parent = link.url
             
             #check if keyword found
             if link.key:

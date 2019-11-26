@@ -1,4 +1,4 @@
-/*Copyright (c) 2013-2019, Rob Schmuecker, Christopher Beall
+/*Copyright (c) 2013-2019, Rob Schmuecker
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -358,7 +358,8 @@ function passTree(treeData){
 
     function click(d) {
         if (d3.event.defaultPrevented) return; // click suppressed
-        d = toggleChildren(d);
+        //d = toggleChildren(d);
+        d = toggleText(d);
         update(d);
         centerNode(d);
     }
@@ -389,10 +390,10 @@ function passTree(treeData){
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+            //d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
-            //d.y = (d.depth * 500); //500px per level.
+            d.y = (d.depth * 500); //500px per level.
         });
 
         // Update the nodes…
@@ -453,7 +454,7 @@ function passTree(treeData){
                 return d.children || d._children ? "end" : "start";
             })
             .text(function(d) {
-                return d.name;
+                return d.title;
             });
 
         // Change the circle fill depending on whether it has children and is collapsed
