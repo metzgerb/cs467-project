@@ -1,29 +1,24 @@
-module.exports = function(){
+module.exports = function () {
     var express = require('express');
     var router = express.Router();
 
-    router.get('/', function(req, res){
+
+    router.get('/', function (req, res) {
+
         history = {};
-        var date = '1/2/19';
-        var starting_page = 'www.oregonstate.edu';
-        var type = 'depth';
         history.result = [];
-        history.result[0] = {};
-        history.result[0].date = date;
-        history.result[0].starting_page = starting_page;
-        history.result[0].type = type;
 
-        history.result[1] = {};
-        history.result[1].date = date;
-        history.result[1].starting_page = starting_page;
-        history.result[1].type = type;
-
-
-        history.result[2] = {};
-        history.result[2].date = date;
-        history.result[2].starting_page = starting_page;
-        history.result[2].type = type;
-        
+        if (req.session.search) {
+            for (var i = 0; i < req.session.search.length; i++) {
+                history.result[i] = {};
+                history.result[i].date = req.session.search[i].date;
+                history.result[i].link = req.session.search[i].link;
+                history.result[i].search_type = req.session.search[i].search_type;
+                history.result[i].keyword = req.session.search[i].keyword;
+                history.result[i].max = req.session.search[i].max;
+            }
+        }
+    
         res.render("history", history);
 
     });

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('input[type=radio][name=search-type]').change(function() {
+    $('input[type=radio][name=search_type]').change(function() {
         if (this.value == 'bfs') {
             $('.page-limit').html('<label name="max-search-bfs" >Page limit (Range 1-3):</label><br><input id="page-limit-bfs" name="max" class="form-control" required type="number" min="1" max="3"/>');
         }
