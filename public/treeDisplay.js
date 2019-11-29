@@ -192,14 +192,6 @@ function passTree(treeData){
         return d;
     }
 
-    // Toggle children on click.
-    //
-    // function click(d) {
-    //     if (d3.event.defaultPrevented) return; // click suppressed
-    //     d = toggleChildren(d);
-    //     update(d);
-    //     centerNode(d);
-    // }
     function click(d) {
         window.location = d.name;
     }
@@ -271,12 +263,22 @@ function passTree(treeData){
                 return d.name;
             })
             .style("fill-opacity", 0);
+        let color;
 
         nodeEnter.append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
             .attr("opacity", 0.2) // change this to zero to hide the target area
-            .style("fill", "red")
+            .style("fill", function(d){
+                let color;
+                if (d.KeywordFound === "True"){
+                    color = "yellow";
+                }
+                else{
+                    color = "red";
+                }
+                return color;
+            })
             .attr('pointer-events', 'mouseover')
             .on("mouseover", function(node) {
                 div.transition().duration(200)

@@ -13,7 +13,7 @@ exports.sendStartingLink = function (req, res, r) {
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
-    var process = spawn('python3', ["./crawl.py", req.body.link, req.body["search_type"], req.body.max]);
+    var process = spawn('python3', ["./crawl.py", req.body.link, req.body["search_type"], req.body.max, req.body.keyword]);
 
     r.tree = '';
     var data = '';
@@ -74,6 +74,7 @@ function makeLinkTree(jsonArray) {
         else {
             newNode = new Node(urlObject.URL);
             newNode.title = urlObject.Title;
+            newNode.KeywordFound = urlObject.KeywordFound;
             dict[urlObject.URL] = newNode;
         }
         if (urlObject.Parent === 'null') {
