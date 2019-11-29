@@ -146,24 +146,6 @@ function passTree(treeData){
         .call(zoomListener);
 
 
-    // Helper functions for collapsing and expanding nodes.
-
-    function collapse(d) {
-        if (d.children) {
-            d._children = d.children;
-            d._children.forEach(collapse);
-            d.children = null;
-        }
-    }
-
-    function expand(d) {
-        if (d._children) {
-            d.children = d._children;
-            d.children.forEach(expand);
-            d._children = null;
-        }
-    }
-
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
     function centerNode(source) {
@@ -223,9 +205,6 @@ function passTree(treeData){
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            //d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
-            // alternatively to keep a fixed scale one can set a fixed depth per level
-            // Normalize for fixed-depth by commenting out below line
             d.y = (d.depth * 500); //500px per level.
         });
 
@@ -283,7 +262,7 @@ function passTree(treeData){
             .on("mouseover", function(node) {
                 div.transition().duration(200)
                     .style("opacity", .9);
-                div.html(node.name + "<br/>" + node.close)
+                div.html(node.name + "<br/>")
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 30) + "px");
             })
