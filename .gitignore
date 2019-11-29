@@ -16,4 +16,4 @@ package-lock.json
 .DS_Store
 validateTree.py
 .vs/PythonSettings.json
-sessions/*.json
+#sessions/*.json
