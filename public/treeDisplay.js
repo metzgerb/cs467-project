@@ -23,7 +23,11 @@ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
 OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+This software is being used in a modified form for educational use by Christopher Beall
+Date of last change: 11/29/2019
+*/
 
 
 // Get JSON data
@@ -43,6 +47,9 @@ function passTree(treeData){
     var duration = 750;
     var root;
 
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
     // size of the diagram
     var viewerWidth = $(document).width();
     var viewerHeight = $(document).height();
@@ -179,98 +186,6 @@ function passTree(treeData){
         .call(zoomListener);
 
 
-    // Define the drag listeners for drag/drop behaviour of nodes.
-    dragListener = d3.behavior.drag()
-        .on("dragstart", function(d) {
-            if (d == root) {
-                return;
-            }
-            dragStarted = true;
-            nodes = tree.nodes(d);
-            d3.event.sourceEvent.stopPropagation();
-            // it's important that we suppress the mouseover event on the node being dragged. Otherwise it will absorb the mouseover event and the underlying node will not detect it d3.select(this).attr('pointer-events', 'none');
-        })
-        .on("drag", function(d) {
-            if (d == root) {
-                return;
-            }
-            if (dragStarted) {
-                domNode = this;
-                initiateDrag(d, domNode);
-            }
-
-            // get coords of mouseEvent relative to svg container to allow for panning
-            relCoords = d3.mouse($('svg').get(0));
-            if (relCoords[0] < panBoundary) {
-                panTimer = true;
-                pan(this, 'left');
-            } else if (relCoords[0] > ($('svg').width() - panBoundary)) {
-
-                panTimer = true;
-                pan(this, 'right');
-            } else if (relCoords[1] < panBoundary) {
-                panTimer = true;
-                pan(this, 'up');
-            } else if (relCoords[1] > ($('svg').height() - panBoundary)) {
-                panTimer = true;
-                pan(this, 'down');
-            } else {
-                try {
-                    clearTimeout(panTimer);
-                } catch (e) {
-
-                }
-            }
-
-            d.x0 += d3.event.dy;
-            d.y0 += d3.event.dx;
-            var node = d3.select(this);
-            node.attr("transform", "translate(" + d.x0 + "," + d.y0 + ")");
-            updateTempConnector();
-        }).on("dragend", function(d) {
-            if (d == root) {
-                return;
-            }
-            domNode = this;
-            if (selectedNode) {
-                // now remove the element from the parent, and insert it into the new elements children
-                var index = draggingNode.parent.children.indexOf(draggingNode);
-                if (index > -1) {
-                    draggingNode.parent.children.splice(index, 1);
-                }
-                if (typeof selectedNode.children !== 'undefined' || typeof selectedNode._children !== 'undefined') {
-                    if (typeof selectedNode.children !== 'undefined') {
-                        selectedNode.children.push(draggingNode);
-                    } else {
-                        selectedNode._children.push(draggingNode);
-                    }
-                } else {
-                    selectedNode.children = [];
-                    selectedNode.children.push(draggingNode);
-                }
-                // Make sure that the node being added to is expanded so user can see added node is correctly moved
-                expand(selectedNode);
-                sortTree();
-                endDrag();
-            } else {
-                endDrag();
-            }
-        });
-
-    function endDrag() {
-        selectedNode = null;
-        d3.selectAll('.ghostCircle').attr('class', 'ghostCircle');
-        d3.select(domNode).attr('class', 'node');
-        // now restore the mouseover event or we won't be able to drag a 2nd time
-        d3.select(domNode).select('.ghostCircle').attr('pointer-events', '');
-        updateTempConnector();
-        if (draggingNode !== null) {
-            update(root);
-            centerNode(draggingNode);
-            draggingNode = null;
-        }
-    }
-
     // Helper functions for collapsing and expanding nodes.
 
     function collapse(d) {
@@ -288,43 +203,6 @@ function passTree(treeData){
             d._children = null;
         }
     }
-
-    var overCircle = function(d) {
-        selectedNode = d;
-        updateTempConnector();
-    };
-    var outCircle = function(d) {
-        selectedNode = null;
-        updateTempConnector();
-    };
-
-    // Function to update the temporary connector indicating dragging affiliation
-    var updateTempConnector = function() {
-        var data = [];
-        if (draggingNode !== null && selectedNode !== null) {
-            // have to flip the source coordinates since we did this for the existing connectors on the original tree
-            data = [{
-                source: {
-                    x: selectedNode.y0,
-                    y: selectedNode.x0
-                },
-                target: {
-                    x: draggingNode.y0,
-                    y: draggingNode.x0
-                }
-            }];
-        }
-        var link = svgGroup.selectAll(".templink").data(data);
-
-        link.enter().append("path")
-            .attr("class", "templink")
-            .attr("d", d3.svg.diagonal())
-            .attr('pointer-events', 'none');
-
-        link.attr("d", d3.svg.diagonal());
-
-        link.exit().remove();
-    };
 
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
@@ -358,8 +236,7 @@ function passTree(treeData){
 
     function click(d) {
         if (d3.event.defaultPrevented) return; // click suppressed
-        //d = toggleChildren(d);
-        d = toggleText(d);
+        d = toggleChildren(d);
         update(d);
         centerNode(d);
     }
@@ -431,7 +308,6 @@ function passTree(treeData){
             })
             .style("fill-opacity", 0);
 
-        // phantom node to give us mouseover in a radius around it
         nodeEnter.append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
@@ -439,10 +315,16 @@ function passTree(treeData){
             .style("fill", "red")
             .attr('pointer-events', 'mouseover')
             .on("mouseover", function(node) {
-                overCircle(node);
+                div.transition().duration(200)
+                    .style("opacity", .9);
+                div.html(node.name + "<br/>" + node.close)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30) + "px");
             })
             .on("mouseout", function(node) {
-                outCircle(node);
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
             });
 
         // Update the text to reflect whether node has children or not.

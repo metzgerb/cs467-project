@@ -66,12 +66,6 @@ function makeLinkTree(jsonArray) {
     let dict = {};
     let root;
 
-    /*
-    for (i = 0; i < jsonArray.length; i++) {
-        // Make a map with URL as key and URL object as item
-        dict[jsonArray[i].URL] = jsonArray[i];
-    }
-    */
     jsonArray.forEach(function (urlObject) {
         let newNode;
         if (urlObject.URL in dict) {

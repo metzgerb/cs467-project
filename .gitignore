@@ -17,3 +17,6 @@ package-lock.json
 validateTree.py
 .vs/PythonSettings.json
 #sessions/*.json
+.idea/$PRODUCT_WORKSPACE_FILE$
+sessions/f41036ec-78a5-4549-a7a8-f41c1f4a95d5.json
+sessions/1aaf23d1-6067-4b17-9522-5f3cd8d77369.json
