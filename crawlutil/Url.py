@@ -61,7 +61,7 @@ class URL():
             response += '""'
         
         #store keyword
-        response += ',"Keyword Found": '
+        response += ',"KeywordFound": '
         if self.key:
             response += '"True"'
         else:
