@@ -27,18 +27,28 @@ def get_robots(url):
     #parse url to get domain
     parsed_url = urllib.parse.urlparse(url, scheme="http")
     
-    #construct robots.txt url
-    robots_url = parsed_url.scheme + "://" + parsed_url.netloc + "/robots.txt"
-
-    #create robot parser
-    #source: https://docs.python.org/3/library/urllib.robotparser.html
-    #rp = urllib.robotparser.RobotFileParser()
-    rp = BotParser.RobotFileParser()
-    rp.set_url(robots_url)
-    
-    #parse robots.txt file
-    rp.read()
+    #check scheme
+    bot_scheme = parsed_url.scheme
+    if bot_scheme not in ["http", "https"]:
+        bot_scheme = "http"
         
+    #construct robots.txt url
+    robots_url = bot_scheme + "://" + parsed_url.netloc + "/robots.txt"
+
+    #check if valid url can be passed to parser
+    if parsed_url.netloc == '':
+        #set bot parser to empty
+        rp = None
+    else:
+        #create robot parser
+        #source: https://docs.python.org/3/library/urllib.robotparser.html
+        #rp = urllib.robotparser.RobotFileParser()
+        rp = BotParser.RobotFileParser()
+        rp.set_url(robots_url)
+    
+        #parse robots.txt file
+        rp.read()
+    
     #return parser object
     return rp
 
@@ -124,7 +134,7 @@ def depth_search(url, link_limit, keyword = None):
         robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
-        if vertex not in links_visited and robots.can_fetch("*", vertex):
+        if vertex not in links_visited and robots is not None and robots.can_fetch("*", vertex):
             #get initial link
             link = get_links(vertex, keyword, parent)
         
@@ -186,7 +196,7 @@ def breadth_search(url, depth_limit, keyword = None):
         robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
-        if vertex not in links_visited and robots.can_fetch("*", vertex):
+        if vertex not in links_visited and robots is not None and robots.can_fetch("*", vertex):
             #get initial link
             link = get_links(vertex, keyword, parent)
             
