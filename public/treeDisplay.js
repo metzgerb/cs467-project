@@ -136,47 +136,7 @@ function passTree(treeData){
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
-    function initiateDrag(d, domNode) {
-        draggingNode = d;
-        d3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
-        d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
-        d3.select(domNode).attr('class', 'node activeDrag');
 
-        svgGroup.selectAll("g.node").sort(function(a, b) { // select the parent and sort the path's
-            if (a.id != draggingNode.id) return 1; // a is not the hovered element, send "a" to the back
-            else return -1; // a is the hovered element, bring "a" to the front
-        });
-        // if nodes has children, remove the links and nodes
-        if (nodes.length > 1) {
-            // remove link paths
-            links = tree.links(nodes);
-            nodePaths = svgGroup.selectAll("path.link")
-                .data(links, function(d) {
-                    return d.target.id;
-                }).remove();
-            // remove child nodes
-            nodesExit = svgGroup.selectAll("g.node")
-                .data(nodes, function(d) {
-                    return d.id;
-                }).filter(function(d, i) {
-                    if (d.id == draggingNode.id) {
-                        return false;
-                    }
-                    return true;
-                }).remove();
-        }
-
-        // remove parent link
-        parentLink = tree.links(tree.nodes(draggingNode.parent));
-        svgGroup.selectAll('path.link').filter(function(d, i) {
-            if (d.target.id == draggingNode.id) {
-                return true;
-            }
-            return false;
-        }).remove();
-
-        dragStarted = null;
-    }
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#body").append("svg")
@@ -233,13 +193,17 @@ function passTree(treeData){
     }
 
     // Toggle children on click.
-
+    //
+    // function click(d) {
+    //     if (d3.event.defaultPrevented) return; // click suppressed
+    //     d = toggleChildren(d);
+    //     update(d);
+    //     centerNode(d);
+    // }
     function click(d) {
-        if (d3.event.defaultPrevented) return; // click suppressed
-        d = toggleChildren(d);
-        update(d);
-        centerNode(d);
+        window.location = d.name;
     }
+
 
     function update(source) {
         // Compute the new height, function counts total children of root node and sets tree height accordingly.
@@ -288,11 +252,11 @@ function passTree(treeData){
             .on('click', click);
 
         nodeEnter.append("circle")
-            .attr('class', 'nodeCircle')
-            .attr("r", 0)
-            .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
-            });
+                .attr('class', 'nodeCircle')
+                .attr("r", 0)
+                .style("fill", function(d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
 
         nodeEnter.append("text")
             .attr("x", function(d) {
