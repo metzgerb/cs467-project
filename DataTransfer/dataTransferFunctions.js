@@ -17,8 +17,20 @@ exports.sendStartingLink = function (req, res, r) {
 
     r.tree = '';
     var data = '';
+    var robotFlag = false;
     process.stdout.on('data', function (chunk) {
-        data += chunk;
+        if (chunk === "timeout") {
+            r.timeout = "The crawler has almost timed out, so your results may not be complete.";
+        }
+        else if (chunk === "robots") {
+            if (!robotFlag) {
+                robotFlag = True;
+                r.robots = "The crawler encountered a prohibitive robots.txt file, so the tree may be smaller than expected.";
+            }
+        }
+        else {
+            data += chunk;
+        }
     });
     process.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
@@ -99,7 +111,7 @@ function makeLinkTree(jsonArray) {
     return root;
 }
 
-//the following functions are not currently being used within the crawler, but are saved here in case they will be needed again
+/*the following functions are not currently being used within the crawler, but are saved here in case they will be needed again
 
 
 class Tree {
@@ -142,3 +154,4 @@ function traverseAndWrite(node, r) {
     r.tree += "<br>" + node.link;
     return r;
 }
+*/
