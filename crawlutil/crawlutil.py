@@ -16,6 +16,8 @@ import urllib.parse
 from Url import URL
 from LinkParser import LinkParser
 import BotParser
+import time
+
 
 """
 Function Name: get_robots
@@ -127,6 +129,11 @@ def depth_search(url, link_limit, keyword = None):
     
     #loop until link_limit reached
     while len(links_visited) < link_limit and url is not None and stack:
+        #check if timelimit reached
+        if time.time()-start_time > 28:
+            print("timeout")
+            break
+        
         #pop from stack
         vertex = stack.pop()
         
@@ -174,6 +181,7 @@ def breadth_search(url, depth_limit, keyword = None):
     parent = "null"
     tree = []
     depth = 0
+    start_time = time.time()
     
     #begin node increase counter at 1 in order to account for root
     #adapted from source: https://stackoverflow.com/questions/10258305/how-to-implement-a-breadth-first-search-to-a-certain-depth
@@ -182,6 +190,11 @@ def breadth_search(url, depth_limit, keyword = None):
     
     #loop until link_limit reached
     while depth <= depth_limit and url is not None and queue:
+        #check if timelimit reached
+        if time.time()-start_time > 28:
+            print("timeout")
+            break
+        
         #get vertex from queue and reduce counter
         vertex = queue.pop()
         depth_increase_counter -= 1

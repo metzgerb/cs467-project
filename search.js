@@ -37,6 +37,21 @@ module.exports = function () {
             return;
         }
 
+        if (keyword){
+            for(var i = 0; i < keyword.length; i++)
+            {
+                if((keyword[i] < 65 || keyword[i] > 122) || ( keyword[i] > 90 && keyword[i] < 97))
+                {
+                    r.error = "Invalid keyword...please try again!";
+                    r.jsscripts = ["static_search.js"];
+                    r.styles = ["search.css"];
+                    res.render('search', r);
+                    return;
+                }
+            }
+        }
+        
+        
         if(!req.body.search_again){
             var search = req.session.search || [];
             search.push({"date": today, "link": link, "search_type": search_type, "max": max, "keyword": keyword});
