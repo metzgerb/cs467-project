@@ -225,7 +225,7 @@ function passTree(treeData){
             .attr("class", "node")
             .attr("transform", function(d) {
                 return "translate(" + source.x0 + "," + source.y0 + ")";
-            });
+            }).on('click', click);
 
         nodeEnter.append("circle")
                 .attr('class', 'nodeCircle')
