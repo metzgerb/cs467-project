@@ -19,31 +19,31 @@ exports.sendStartingLink = function (req, res, r) {
     var data = '';
     var robotFlag = false;
     process.stdout.on('data', function (chunk) {
-        if (chunk === "timeout") {
-            r.timeout = "The crawler has almost timed out, so your results may not be complete.";
-        }
-        else if (chunk === "robots") {
-            if (!robotFlag) {
-                robotFlag = True;
-                r.robots = "The crawler encountered a prohibitive robots.txt file, so the tree may be smaller than expected.";
-            }
-        }
-        else {
-            data += chunk;
-        }
+        data += chunk;
     });
     process.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    process.on('exit', function() {
+    process.on('exit', function () {
+        data = data.toString();
+        if (data.startsWith("timeout")) {
+            data = data.replace("timeout", "");
+            r.timeout = "The program has neared timeout, results may be smaller than expected.";
+        }
+        if (data.startsWith("robots")) {
+            data = data.replace("robots", "");
+            r.robots = "The crawler encountered a robots.txt file that prevented it from crawling certain links, results may be shorter than expected.";
+        }
+        console.log(data);
         try {
-            console.log(data);
+            //console.log(data);
             jsonArray = JSON.parse(data);
+            var root = makeLinkTree(jsonArray);
         } catch (e) {
             console.error(e);
             r.error = e;
         }
-        var root = makeLinkTree(jsonArray);
+        
         if (root === undefined) {
             r.header = "<h2>No JSON data received. This could be due to a robots.txt file disallowing crawlers on that website. (For example, http://www.google.com will block crawlers.)</h2>";
         }

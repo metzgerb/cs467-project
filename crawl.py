@@ -38,7 +38,7 @@ def main(url, search_type, link_limit, keyword = None):
     
     #check robots flag
     if robots_flag:
-        print("robots")
+        print("robots", end = "")
     
     print('[' + ','.join(string_list) + ']')
     return 0

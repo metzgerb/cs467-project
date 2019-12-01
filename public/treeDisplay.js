@@ -55,7 +55,7 @@ function passTree(treeData){
     var viewerHeight = $(document).height();
 
     var tree = d3.layout.tree()
-        .nodeSize([maxLabelLength*5, 50]);
+        .nodeSize([maxLabelLength*2, 50]);
 
     // define a d3 diagonal projection for use by the node paths later on.
     var diagonal = d3.svg.diagonal()
@@ -82,7 +82,7 @@ function passTree(treeData){
     // Call visit function to establish maxLabelLength
     visit(treeData, function(d) {
         totalNodes++;
-        maxLabelLength = Math.max(d.name.length, maxLabelLength);
+        maxLabelLength = Math.max(d.title.length, maxLabelLength);
 
     }, function(d) {
         return d.children && d.children.length > 0 ? d.children : null;

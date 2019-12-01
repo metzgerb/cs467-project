@@ -197,7 +197,7 @@ def breadth_search(url, depth_limit, keyword = None):
     while depth <= depth_limit and url is not None and queue:
         #check if timelimit reached
         if time.time()-start_time > 28:
-            print("timeout")
+            print("timeout", end = "")
             break
         
         #get vertex from queue and reduce counter
