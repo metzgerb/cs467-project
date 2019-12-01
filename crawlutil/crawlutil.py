@@ -117,7 +117,7 @@ Description: Uses a Depth First Search algorithm to construct a list of links
 Inputs: takes a string representing a URL to be crawled, an integer for the 
     maximum number of links to follow, and a string representing a keyword to 
     be searched for
-Outputs: returns a list of URL objects
+Outputs: returns a list of URL objects, and a robots flag
 """
 def depth_search(url, link_limit, keyword = None):
     #set link counter and initial variables
@@ -126,6 +126,7 @@ def depth_search(url, link_limit, keyword = None):
     parent_stack = ["null"]
     tree = []
     start_time = time.time()
+    robots_flag = False
     
     #loop until link_limit reached
     while len(links_visited) < link_limit and url is not None and stack:
@@ -143,8 +144,8 @@ def depth_search(url, link_limit, keyword = None):
         #check if already visited or in robots.txt
         if vertex not in links_visited and robots is not None:
             #check if robots can't fetch
-            if not robots.can_fetch("*", vertex):
-                print("robots")
+            if not robots.can_fetch("*", vertex) and not robots_flag:
+                robots_flag = True
             else:
                 #get initial link
                 link = get_links(vertex, keyword, parent)
@@ -165,7 +166,7 @@ def depth_search(url, link_limit, keyword = None):
                 if link.key:
                     break
         
-    return tree
+    return tree, robots_flag
     
     
 """
@@ -175,7 +176,7 @@ Description: Uses a Breadth First Search algorithm to construct a list of links
 Inputs: takes a string representing a URL to be crawled, an integer for the 
     maximum depth of links to follow, and a string representing a keyword to 
     be searched for
-Outputs: returns a list of URL objects
+Outputs: returns a list of URL objects, and a robots flag
 """
 def breadth_search(url, depth_limit, keyword = None):
     #set link counter and initial variables
@@ -185,6 +186,7 @@ def breadth_search(url, depth_limit, keyword = None):
     tree = []
     depth = 0
     start_time = time.time()
+    robots_flag = False
     
     #begin node increase counter at 1 in order to account for root
     #adapted from source: https://stackoverflow.com/questions/10258305/how-to-implement-a-breadth-first-search-to-a-certain-depth
@@ -214,8 +216,8 @@ def breadth_search(url, depth_limit, keyword = None):
         #check if already visited or in robots.txt
         if vertex not in links_visited and robots is not None:
             #check if robots can't fetch
-            if not robots.can_fetch("*", vertex):
-                print("robots")
+            if not robots.can_fetch("*", vertex) and not robots_flag:
+                robots_flag = True
             else:
                 #get initial link
                 link = get_links(vertex, keyword, parent)
@@ -241,4 +243,4 @@ def breadth_search(url, depth_limit, keyword = None):
                 if link.key:
                     break
         
-    return tree
+    return tree, robots_flag
