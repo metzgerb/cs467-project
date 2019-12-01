@@ -25,8 +25,8 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-This software is being used in a modified form for educational use by Christopher Beall
-Date of last change: 11/29/2019
+This software is being used in a modified form for educational use by Christopher Beall. 
+Date of last change: 12/01/2019
 */
 
 
@@ -89,17 +89,8 @@ function passTree(treeData){
     });
 
 
-    // sort the tree according to the node names
 
-    function sortTree() {
-        tree.sort(function(a, b) {
-            return b.name.toLowerCase() < a.name.toLowerCase() ? 1 : -1;
-        });
-    }
-    // Sort the tree initially incase the JSON isn't in a sorted order.
-    sortTree();
 
-    // TODO: Pan function, can be better implemented.
 
     function pan(domNode, direction) {
         var speed = panSpeed;
@@ -147,7 +138,7 @@ function passTree(treeData){
 
 
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
-
+    // Modified: only applies to first load in, to center the root load in.
     function centerNode(source) {
         scale = zoomListener.scale();
         x = -source.y0;
@@ -161,26 +152,6 @@ function passTree(treeData){
         zoomListener.translate([x, y]);
     }
 
-    // Toggle children function
-
-    function toggleChildren(d) {
-        if (d.children) {
-            d._children = d.children;
-            d.children = null;
-        } else if (d._children) {
-            d.children = d._children;
-            d._children = null;
-        }
-        return d;
-    }
-
-
-    function click(d) {
-        window.open(
-            d.name,
-            '_blank'
-        )
-    }
 
 
 
@@ -248,6 +219,7 @@ function passTree(treeData){
             .style("fill-opacity", 0);
         let color;
 
+        //Modified, makes the circles a clickable link rather than collapse and expand
         nodeEnter
             .append("a")
                 .attr("xlink:href", function (d) { return d.name; })
@@ -255,6 +227,7 @@ function passTree(treeData){
             .attr('class', 'ghostCircle')
             .attr("r", 30)
             .attr("opacity", 0.2) // change this to zero to hide the target area
+            // This is added in order to mark a node if it has the keyword.
             .style("fill", function(d){
                 let color;
                 if (d.KeywordFound === "True"){
@@ -266,6 +239,7 @@ function passTree(treeData){
                 return color;
             })
             .attr('pointer-events', 'mouseover')
+            //Modified, this code adds a tooltip on mouseover displaying the url
             .on("mouseover", function(node) {
                 div.transition().duration(200)
                     .style("opacity", .9);
@@ -281,12 +255,6 @@ function passTree(treeData){
 
         // Update the text to reflect whether node has children or not.
         node.select('text')
-            .attr("x", function(d) {
-                return d.children || d._children ? -10 : 10;
-            })
-            .attr("text-anchor", function(d) {
-                return d.children || d._children ? "end" : "start";
-            })
             .text(function(d) {
                 return d.title;
             });
@@ -309,19 +277,7 @@ function passTree(treeData){
         nodeUpdate.select("text")
             .style("fill-opacity", 1);
 
-        // Transition exiting nodes to the parent's new position.
-        var nodeExit = node.exit().transition()
-            .duration(duration)
-            .attr("transform", function(d) {
-                return "translate(" + source.x + "," + source.y + ")";
-            })
-            .remove();
-
-        nodeExit.select("circle")
-            .attr("r", 0);
-
-        nodeExit.select("text")
-            .style("fill-opacity", 0);
+     
 
         // Update the links…
         var link = svgGroup.selectAll("path.link")
