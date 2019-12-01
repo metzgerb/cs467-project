@@ -6,7 +6,7 @@ Description: URL crawling program that can search DFS or BFS through links.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-11-09
+Last Modified: 2019-11-24
 """
 
 #import dependencies
@@ -22,15 +22,15 @@ Inputs: takes a string representing the starting URL, a char flag for type of
     halting the search
 Outputs: Tree in JSON format
 """
-def main(url, search_type, link_limit, keyword = None):   
-    #TODO: Validate variables
-    
+def main(url, search_type, link_limit, keyword = None):             
     #branch based on DFS or BFS (Use different functions for each, general flow below)
     if search_type == "dfs":
         tree = cu.depth_search(url, link_limit, keyword)
-    else:
+    elif search_type == "bfs":
         tree = cu.breadth_search(url, link_limit, keyword)
-                
+    #bad parameter
+    else:
+        return 1
     #log the resulting output
     string_list = []
     for node in tree:
