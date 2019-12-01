@@ -99,7 +99,7 @@ function makeLinkTree(jsonArray) {
     return root;
 }
 
-//the following functions are not currently being used within the crawler, but are saved here in case they will be needed again
+/*the following functions are not currently being used within the crawler, but are saved here in case they will be needed again
 
 
 class Tree {
@@ -142,3 +142,4 @@ function traverseAndWrite(node, r) {
     r.tree += "<br>" + node.link;
     return r;
 }
+*/
