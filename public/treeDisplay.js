@@ -177,7 +177,8 @@ function passTree(treeData){
     function click(d) {
         window.open(
             d.name,
-            '_blank'
+            "_blank",
+            "width=200"
         )
         // window.location = d.name;
     }
