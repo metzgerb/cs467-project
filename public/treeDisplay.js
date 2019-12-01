@@ -55,7 +55,7 @@ function passTree(treeData){
     var viewerHeight = $(document).height();
 
     var tree = d3.layout.tree()
-        .nodeSize([maxLabelLength*2, 50]);
+        .nodeSize([maxLabelLength, 50]);
 
     // define a d3 diagonal projection for use by the node paths later on.
     var diagonal = d3.svg.diagonal()
@@ -89,7 +89,15 @@ function passTree(treeData){
     });
 
 
+    // sort the tree according to the node names
 
+    function sortTree() {
+        tree.sort(function(a, b) {
+            return b.name.toLowerCase() < a.name.toLowerCase() ? 1 : -1;
+        });
+    }
+    // Sort the tree initially incase the JSON isn't in a sorted order.
+    sortTree();
 
 
     function pan(domNode, direction) {
@@ -154,8 +162,6 @@ function passTree(treeData){
 
 
 
-
-
     function update(source) {
         // Compute the new height, function counts total children of root node and sets tree height accordingly.
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
@@ -196,7 +202,7 @@ function passTree(treeData){
             .attr("class", "node")
             .attr("transform", function(d) {
                 return "translate(" + source.x0 + "," + source.y0 + ")";
-            })
+            });
 
         nodeEnter.append("circle")
                 .attr('class', 'nodeCircle')
@@ -222,8 +228,8 @@ function passTree(treeData){
 
         //Modified, makes the circles a clickable link rather than collapse and expand
         nodeEnter
-            // .append("a")
-            //     .attr("xlink:href", function (d) { return d.name; })
+            .append("a")
+                .attr("xlink:href", function (d) { return d.name; })
             .append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
@@ -252,8 +258,7 @@ function passTree(treeData){
                 div.transition()
                     .duration(500)
                     .style("opacity", 0);
-            })
-            .on('click', click);
+            });
 
         // Update the text to reflect whether node has children or not.
         node.select('text')
