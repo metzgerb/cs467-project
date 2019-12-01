@@ -123,7 +123,7 @@ def depth_search(url, link_limit, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     stack = [url]
-    parent = "null"
+    parent_stack = ["null"]
     tree = []
     start_time = time.time()
     
@@ -136,7 +136,7 @@ def depth_search(url, link_limit, keyword = None):
         
         #pop from stack
         vertex = stack.pop()
-        
+        parent = parent_stack.pop()
         #get robot parser
         robots = get_robots(vertex)
         
@@ -159,8 +159,7 @@ def depth_search(url, link_limit, keyword = None):
                 #add to stack
                 for l in random_links:
                     stack.append(l)
-            
-                parent = link.url
+                    parent_stack.append(link.url)
             
                 #check if keyword found
                 if link.key:
