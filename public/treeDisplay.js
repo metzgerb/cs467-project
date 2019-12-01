@@ -174,9 +174,9 @@ function passTree(treeData){
         return d;
     }
 
-    function click(d) {
-        window.location = d.name;
-    }
+    // function click(d) {
+    //     window.location = d.name;
+    // }
 
 
     function update(source) {
@@ -205,7 +205,7 @@ function passTree(treeData){
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * 500); //500px per level.
+            d.y = (d.depth * 300);
         });
 
         // Update the nodes…
@@ -219,8 +219,7 @@ function passTree(treeData){
             .attr("class", "node")
             .attr("transform", function(d) {
                 return "translate(" + source.x0 + "," + source.y0 + ")";
-            })
-            .on('click', click);
+            });
 
         nodeEnter.append("circle")
                 .attr('class', 'nodeCircle')
@@ -244,7 +243,10 @@ function passTree(treeData){
             .style("fill-opacity", 0);
         let color;
 
-        nodeEnter.append("circle")
+        nodeEnter
+            .append("a")
+                .attr("xlink:href", function (d) { return d.name; })
+            .append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
             .attr("opacity", 0.2) // change this to zero to hide the target area
