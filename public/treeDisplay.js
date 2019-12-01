@@ -176,11 +176,7 @@ function passTree(treeData){
 
 
     function click(d) {
-        window.open(
-            d.name,
-            "_blank",
-            "width=200"
-        )
+        window.open(d.name);
     }
 
 
@@ -225,7 +221,7 @@ function passTree(treeData){
             .attr("class", "node")
             .attr("transform", function(d) {
                 return "translate(" + source.x0 + "," + source.y0 + ")";
-            });
+            })
 
         nodeEnter.append("circle")
                 .attr('class', 'nodeCircle')
@@ -250,8 +246,8 @@ function passTree(treeData){
         let color;
 
         nodeEnter
-            .append("a")
-                .attr("xlink:href", function (d) { return d.name; })
+            // .append("a")
+            //     .attr("xlink:href", function (d) { return d.name; })
             .append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
@@ -278,7 +274,8 @@ function passTree(treeData){
                 div.transition()
                     .duration(500)
                     .style("opacity", 0);
-            });
+            })
+            .on('click', click);
 
         // Update the text to reflect whether node has children or not.
         node.select('text')
