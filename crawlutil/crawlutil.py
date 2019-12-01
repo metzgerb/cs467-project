@@ -6,7 +6,7 @@ Description: Utility functions for URL crawling program.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-11-24
+Last Modified: 2019-12-01
 """
 
 #import dependencies
@@ -44,7 +44,6 @@ def get_robots(url):
     else:
         #create robot parser
         #source: https://docs.python.org/3/library/urllib.robotparser.html
-        #rp = urllib.robotparser.RobotFileParser()
         rp = BotParser.RobotFileParser()
         rp.set_url(robots_url)
     
@@ -126,6 +125,7 @@ def depth_search(url, link_limit, keyword = None):
     stack = [url]
     parent = "null"
     tree = []
+    start_time = time.time()
     
     #loop until link_limit reached
     while len(links_visited) < link_limit and url is not None and stack:
@@ -141,26 +141,30 @@ def depth_search(url, link_limit, keyword = None):
         robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
-        if vertex not in links_visited and robots is not None and robots.can_fetch("*", vertex):
-            #get initial link
-            link = get_links(vertex, keyword, parent)
+        if vertex not in links_visited and robots is not None:
+            #check if robots can't fetch
+            if not robots.can_fetch("*", vertex):
+                print("robots")
+            else:
+                #get initial link
+                link = get_links(vertex, keyword, parent)
         
-            #add link to list of visited and add to tree
-            links_visited.add(vertex)
-            tree.append(link)
+                #add link to list of visited and add to tree
+                links_visited.add(vertex)
+                tree.append(link)
         
-            #get_random links
-            random_links = link.get_random()
+                #get_random links
+                random_links = link.get_random()
             
-            #add to stack
-            for l in random_links:
-                stack.append(l)
+                #add to stack
+                for l in random_links:
+                    stack.append(l)
             
-            parent = link.url
+                parent = link.url
             
-            #check if keyword found
-            if link.key:
-                break
+                #check if keyword found
+                if link.key:
+                    break
         
     return tree
     
@@ -209,29 +213,33 @@ def breadth_search(url, depth_limit, keyword = None):
         robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
-        if vertex not in links_visited and robots is not None and robots.can_fetch("*", vertex):
-            #get initial link
-            link = get_links(vertex, keyword, parent)
+        if vertex not in links_visited and robots is not None:
+            #check if robots can't fetch
+            if not robots.can_fetch("*", vertex):
+                print("robots")
+            else:
+                #get initial link
+                link = get_links(vertex, keyword, parent)
             
-            #add link to list of visited and add to tree
-            links_visited.add(vertex)
-            tree.append(link)
+                #add link to list of visited and add to tree
+                links_visited.add(vertex)
+                tree.append(link)
             
-            #add to back of queue
-            for l in link.links:
-                #add to queue
-                queue.insert(0,l)
+                #add to back of queue
+                for l in link.links:
+                    #add to queue
+                    queue.insert(0,l)
             
-            #check if pending depth increase
-            if pending_depth_increase:
-                #set counter to what's already in the queue and reset flag
-                depth_increase_counter = len(queue)
-                pending_depth_increase = False
+                #check if pending depth increase
+                if pending_depth_increase:
+                    #set counter to what's already in the queue and reset flag
+                    depth_increase_counter = len(queue)
+                    pending_depth_increase = False
             
-                parent = link.url
+                    parent = link.url
             
-            #check if keyword found
-            if link.key:
-                break
+                #check if keyword found
+                if link.key:
+                    break
         
     return tree
