@@ -155,6 +155,7 @@ function passTree(treeData){
 
 
 
+
     function update(source) {
         // Compute the new height, function counts total children of root node and sets tree height accordingly.
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
@@ -195,7 +196,7 @@ function passTree(treeData){
             .attr("class", "node")
             .attr("transform", function(d) {
                 return "translate(" + source.x0 + "," + source.y0 + ")";
-            });
+            })
 
         nodeEnter.append("circle")
                 .attr('class', 'nodeCircle')
@@ -221,8 +222,8 @@ function passTree(treeData){
 
         //Modified, makes the circles a clickable link rather than collapse and expand
         nodeEnter
-            .append("a")
-                .attr("xlink:href", function (d) { return d.name; })
+            // .append("a")
+            //     .attr("xlink:href", function (d) { return d.name; })
             .append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
@@ -251,7 +252,8 @@ function passTree(treeData){
                 div.transition()
                     .duration(500)
                     .style("opacity", 0);
-            });
+            })
+            .on('click', click);
 
         // Update the text to reflect whether node has children or not.
         node.select('text')
