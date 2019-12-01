@@ -205,7 +205,7 @@ function passTree(treeData){
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * 500); //500px per level.
+            d.y = (d.depth * 300);
         });
 
         // Update the nodes…
@@ -220,7 +220,6 @@ function passTree(treeData){
             .attr("transform", function(d) {
                 return "translate(" + source.x0 + "," + source.y0 + ")";
             });
-            //.on('click', click);
 
         nodeEnter.append("circle")
                 .attr('class', 'nodeCircle')
