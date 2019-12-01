@@ -175,7 +175,11 @@ function passTree(treeData){
     }
 
     function click(d) {
-        window.location = d.name;
+        window.open(
+            d.name,
+            '_blank'
+        )
+        // window.location = d.name;
     }
 
 
