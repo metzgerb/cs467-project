@@ -6,7 +6,7 @@ Description: URL crawling program that can search DFS or BFS through links.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-11-24
+Last Modified: 2019-12-01
 """
 
 #import dependencies
@@ -25,9 +25,9 @@ Outputs: Tree in JSON format
 def main(url, search_type, link_limit, keyword = None):             
     #branch based on DFS or BFS (Use different functions for each, general flow below)
     if search_type == "dfs":
-        tree = cu.depth_search(url, link_limit, keyword)
+        tree, robots_flag = cu.depth_search(url, link_limit, keyword)
     elif search_type == "bfs":
-        tree = cu.breadth_search(url, link_limit, keyword)
+        tree, robots_flag = cu.breadth_search(url, link_limit, keyword)
     #bad parameter
     else:
         return 1
@@ -35,7 +35,11 @@ def main(url, search_type, link_limit, keyword = None):
     string_list = []
     for node in tree:
         string_list.append(node.__str__())
-
+    
+    #check robots flag
+    if robots_flag:
+        print("robots", end = "")
+    
     print('[' + ','.join(string_list) + ']')
     return 0
 

@@ -6,7 +6,7 @@ Description: Utility functions for URL crawling program.
 Author: Brian Metzger (metzgerb@oregonstate.edu)
 Course: CS467 (Fall 2019)
 Created: 2019-10-17
-Last Modified: 2019-11-24
+Last Modified: 2019-12-01
 """
 
 #import dependencies
@@ -16,6 +16,8 @@ import urllib.parse
 from Url import URL
 from LinkParser import LinkParser
 import BotParser
+import time
+
 
 """
 Function Name: get_robots
@@ -42,7 +44,6 @@ def get_robots(url):
     else:
         #create robot parser
         #source: https://docs.python.org/3/library/urllib.robotparser.html
-        #rp = urllib.robotparser.RobotFileParser()
         rp = BotParser.RobotFileParser()
         rp.set_url(robots_url)
     
@@ -116,46 +117,56 @@ Description: Uses a Depth First Search algorithm to construct a list of links
 Inputs: takes a string representing a URL to be crawled, an integer for the 
     maximum number of links to follow, and a string representing a keyword to 
     be searched for
-Outputs: returns a list of URL objects
+Outputs: returns a list of URL objects, and a robots flag
 """
 def depth_search(url, link_limit, keyword = None):
     #set link counter and initial variables
     links_visited = set()
     stack = [url]
-    parent = "null"
+    parent_stack = ["null"]
     tree = []
+    start_time = time.time()
+    robots_flag = False
     
     #loop until link_limit reached
     while len(links_visited) < link_limit and url is not None and stack:
+        #check if timelimit reached
+        if time.time()-start_time > 28:
+            print("timeout")
+            break
+        
         #pop from stack
         vertex = stack.pop()
-        
+        parent = parent_stack.pop()
         #get robot parser
         robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
-        if vertex not in links_visited and robots is not None and robots.can_fetch("*", vertex):
-            #get initial link
-            link = get_links(vertex, keyword, parent)
+        if vertex not in links_visited and robots is not None:
+            #check if robots can't fetch
+            if not robots.can_fetch("*", vertex) and not robots_flag:
+                robots_flag = True
+            else:
+                #get initial link
+                link = get_links(vertex, keyword, parent)
         
-            #add link to list of visited and add to tree
-            links_visited.add(vertex)
-            tree.append(link)
+                #add link to list of visited and add to tree
+                links_visited.add(vertex)
+                tree.append(link)
         
-            #get_random links
-            random_links = link.get_random()
+                #get_random links
+                random_links = link.get_random()
             
-            #add to stack
-            for l in random_links:
-                stack.append(l)
+                #add to stack
+                for l in random_links:
+                    stack.append(l)
+                    parent_stack.append(link.url)
             
-            parent = link.url
-            
-            #check if keyword found
-            if link.key:
-                break
+                #check if keyword found
+                if link.key:
+                    break
         
-    return tree
+    return tree, robots_flag
     
     
 """
@@ -165,7 +176,7 @@ Description: Uses a Breadth First Search algorithm to construct a list of links
 Inputs: takes a string representing a URL to be crawled, an integer for the 
     maximum depth of links to follow, and a string representing a keyword to 
     be searched for
-Outputs: returns a list of URL objects
+Outputs: returns a list of URL objects, and a robots flag
 """
 def breadth_search(url, depth_limit, keyword = None):
     #set link counter and initial variables
@@ -174,6 +185,8 @@ def breadth_search(url, depth_limit, keyword = None):
     parent = "null"
     tree = []
     depth = 0
+    start_time = time.time()
+    robots_flag = False
     
     #begin node increase counter at 1 in order to account for root
     #adapted from source: https://stackoverflow.com/questions/10258305/how-to-implement-a-breadth-first-search-to-a-certain-depth
@@ -182,6 +195,11 @@ def breadth_search(url, depth_limit, keyword = None):
     
     #loop until link_limit reached
     while depth <= depth_limit and url is not None and queue:
+        #check if timelimit reached
+        if time.time()-start_time > 28:
+            print("timeout", end = "")
+            break
+        
         #get vertex from queue and reduce counter
         vertex = queue.pop()
         depth_increase_counter -= 1
@@ -196,29 +214,33 @@ def breadth_search(url, depth_limit, keyword = None):
         robots = get_robots(vertex)
         
         #check if already visited or in robots.txt
-        if vertex not in links_visited and robots is not None and robots.can_fetch("*", vertex):
-            #get initial link
-            link = get_links(vertex, keyword, parent)
+        if vertex not in links_visited and robots is not None:
+            #check if robots can't fetch
+            if not robots.can_fetch("*", vertex) and not robots_flag:
+                robots_flag = True
+            else:
+                #get initial link
+                link = get_links(vertex, keyword, parent)
             
-            #add link to list of visited and add to tree
-            links_visited.add(vertex)
-            tree.append(link)
+                #add link to list of visited and add to tree
+                links_visited.add(vertex)
+                tree.append(link)
             
-            #add to back of queue
-            for l in link.links:
-                #add to queue
-                queue.insert(0,l)
+                #add to back of queue
+                for l in link.links:
+                    #add to queue
+                    queue.insert(0,l)
             
-            #check if pending depth increase
-            if pending_depth_increase:
-                #set counter to what's already in the queue and reset flag
-                depth_increase_counter = len(queue)
-                pending_depth_increase = False
+                #check if pending depth increase
+                if pending_depth_increase:
+                    #set counter to what's already in the queue and reset flag
+                    depth_increase_counter = len(queue)
+                    pending_depth_increase = False
             
-                parent = link.url
+                    parent = link.url
             
-            #check if keyword found
-            if link.key:
-                break
+                #check if keyword found
+                if link.key:
+                    break
         
-    return tree
+    return tree, robots_flag
