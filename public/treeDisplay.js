@@ -230,7 +230,7 @@ function passTree(treeData){
         nodeEnter
             .append("a")
                 .attr("xlink:href", function (d) { return d.name; })
-				.attr("xlink:show", "new")
+				.attr("xlink:show", "new") //added to open links in new tab
             .append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
