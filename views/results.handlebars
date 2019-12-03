@@ -1,15 +1,22 @@
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="/static/treeDisplay.js"></script>
-{{{this.header}}}
+
 <div id="body">
-    <p>Instructions: 
-        Your links are displayed on each node. <br>
-        Scroll to zoom in and out of the tree<br>
-        Drag to pan the tree<br>
-        keyword node is in yellow<br>
-        click on each node to be directed to the link in a new tab/window<br>
-        If you do not get back the number of results that you expect, it could be due to a robots.txt file that's blocking web crawlers.<br>
-        </p>
+    <div class="instructions"><span style="border-bottom: 1px dotted black;">Instructions</span>
+        <span class="instructtext">
+			<ul>
+				<li>Links are displayed on each node</li>
+				<li>Scroll to zoom in and out of the tree</li>
+				<li>Drag to pan the tree</li>
+				<li>Keyword node is filled with yellow</li>
+				<li>Click on each node to be directed to the link in a new tab/window</li>
+				<li>If you do not get back the number of results that you expect, it could be due to a robots.txt file that's blocking web crawlers.</li>
+			</ul>
+		<span>
+    </div>
+
+{{{this.header}}}
+
     <p, class="error">
         {{{this.error}}}
         </p,>
