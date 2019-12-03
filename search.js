@@ -9,7 +9,7 @@ module.exports = function () {
         results.jsscripts = ["static_search.js"];
         results.styles = ["search.css"];
 
-        console.log(req.session.id);
+        //console.log(req.session.id);
         res.render("search", results);
     });
 

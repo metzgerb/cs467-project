@@ -31,7 +31,7 @@ exports.sendStartingLink = function (req, res, r) {
             data = data.replace("robots", "");
             r.robots = "The crawler encountered a robots.txt file that prevented it from crawling certain links, results may be shorter than expected.";
         }
-        console.log(data);
+        //console.log(data);
         try {
             //console.log(data);
             jsonArray = JSON.parse(data);
