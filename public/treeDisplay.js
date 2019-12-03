@@ -241,8 +241,11 @@ function passTree(treeData){
                 if (d.KeywordFound === "True"){
                     color = "yellow";
                 }
-                else{
-                    color = "red";
+                else if (d.statuscode >= 400){
+					color = "red";
+				}
+				else{
+                    color = "green";
                 }
                 return color;
             })

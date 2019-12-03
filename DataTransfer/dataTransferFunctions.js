@@ -7,9 +7,6 @@
 
 // Function to send starting link from website to Unix program
 exports.sendStartingLink = function (req, res, r) {
-
-    //TODO: work with Brian to directly call the crawler from here
-
     //temporary code for testing
     var spawn = require("child_process").spawn;
 
@@ -87,6 +84,7 @@ function makeLinkTree(jsonArray) {
             newNode = new Node(urlObject.URL);
             newNode.title = urlObject.Title;
             newNode.KeywordFound = urlObject.KeywordFound;
+			newNode.statuscode = urlObject.STATUS;
             dict[urlObject.URL] = newNode;
         }
         if (urlObject.Parent === 'null') {
